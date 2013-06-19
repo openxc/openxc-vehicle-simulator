@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body %}
+    <form action="{{ url_for('update_steering_wheel') }}" method=post class=add-entry>
+      <dl>
+        <dt>New Steering Wheel Angle:
+        <dd><input type=text size=30 name=angle>
+       <dd><input type=submit value=Update>
+      </dl>
+    </form>
+    <form action="{{ url_for('connect') }}" method=post class=add-entry>
+      <dl>
+       <dd><input type=submit value=Connect>
+      </dl>
+    </form>
+{% endblock %}
