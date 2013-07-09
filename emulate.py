@@ -45,9 +45,7 @@ def vehicle_data():
 @app.route('/connect', methods=['POST'])
 def connect():
      #make a global socket
-     global gConn
-     gConn = EnablerConnection.EnablerConnection()
-     gConn.create_socket_connection('', 50013)
+     flash('Sorry, obsolete command.')
      return render_template('vehicle_controls.html')
 #     return redirect(url_for('vehicle_data'))
 
@@ -56,7 +54,8 @@ def update_steering_wheel():
      angle = request.form['angle']
      print "New Steering Wheel Angle: " + angle
      flash('Steering Wheel Angle set to ' + angle)
-     gConn.send("{\"name\":\"steering_wheel_angle\",\"value\":" + angle + "}")
+     global gConn
+     gConn.update_angle(angle)
      return redirect(url_for('vehicle_data'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -82,4 +81,10 @@ def logout():
 if __name__ == '__main__':
      print 'Running Main...'
      init_db()
-     app.run()
+     
+     global gConn
+     gConn = EnablerConnection.EnablerConnection()
+     gConn.start()
+
+     app.run(use_reloader=False)
+     
