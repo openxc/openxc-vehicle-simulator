@@ -7,6 +7,17 @@ class EnablerConnection():
         self.initialize_data()
         print 'Enabler Connection created!'
 
+        global gConnections
+        gConnections = []
+        
+        t = threading.Thread(target=self.listen_loop)
+        t.setDaemon(True)
+        t.start()
+
+        t2 = threading.Thread(target=self.send_loop)
+        t2.setDaemon(True)
+        t2.start()
+
     def create_socket_connection(self, host, port):
         #create the network socket connection
         print 'Creating connection...'
@@ -18,9 +29,9 @@ class EnablerConnection():
         self.conn, self.addr = self.s.accept()
         print 'Connection established.'
 
-    def send(self, outString):
+    def send(self, outString, conn):
         # print 'Sending ' + outString
-        self.conn.sendall(outString)
+        conn.sendall(outString)
 
     def initialize_data(self):
         self.steeringWheelAngle = 0
@@ -29,22 +40,28 @@ class EnablerConnection():
     def update_angle(self, angle):
         self.steeringWheelAngle = angle
 
-    def send_loop(self):
-        try:
-            self.create_socket_connection('', 50015)
-        except Exception as e:
-            print 'Network creation failed.'
-            print e
-        else:
-            #This blocks until we get a connection.
-            self.connected = True
-            # TODO:  Add other loops with different delays.
-            while self.connected == True:
-                self.send("{\"name\":\"steering_wheel_angle\",\"value\":\"" + str(self.steeringWheelAngle) + "\"}\n")
-                time.sleep(0.1)
+    def listen_loop(self):
+        port = 50001
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.s.bind(('', port))                
+        self.s.listen(1)
+        print 'Listening for a connection on port ' + str(port) + '...'
+        global gConnections
+        while True:
+            conn, addr = self.s.accept()
+            print "New connection received."
+            gConnections.append(conn)
 
-    def start(self):
-        t = threading.Thread(target=self.send_loop)
-        t.setDaemon(True)
-        t.start()
-     
+    def send_loop(self):
+        global gConnections
+        while True:
+            for connection in gConnections:
+                try:
+                    self.send("{\"name\":\"steering_wheel_angle\",\"value\":\"" + str(self.steeringWheelAngle) + "\"}\n", connection)
+                except:
+                    #No recovery.  If ANYTHING goes wrong, drop the connection.
+                    gConnections.remove(connection)
+                    print "Connection dropped."
+            time.sleep(0.16)
+

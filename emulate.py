@@ -84,7 +84,6 @@ if __name__ == '__main__':
      
      global gConn
      gConn = EnablerConnection.EnablerConnection()
-     gConn.start()
 
      app.run(use_reloader=False)
      
