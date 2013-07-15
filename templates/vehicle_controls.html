@@ -7,9 +7,22 @@
        <dd><input type=submit value=Update>
       </dl>
     </form>
-    <form action="{{ url_for('connect') }}" method=post class=add-entry>
+      {% if session.updates_paused %}
+      <form action="{{ url_for('single') }}" method=post class=add-entry>
       <dl>
-       <dd><input type=submit value=Connect>
+       <dd><input type=submit value="Single Update">
       </dl>
-    </form>
+      </form>
+      <form action="{{ url_for('start') }}" method=post class=add-entry>
+      <dl>
+       <dd><input type=submit value=Resume>
+      </dl>
+      </form>
+       {% else %}
+         <form action="{{ url_for('stop') }}" method=post class=add-entry>
+      <dl>
+       <dd><input type=submit value=Pause>
+      </dl>
+      </form>
+      {% endif %}
 {% endblock %}

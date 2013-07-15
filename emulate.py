@@ -42,12 +42,31 @@ def teardown_request(exception):
 def vehicle_data():
     return render_template('vehicle_controls.html')
 
-@app.route('/connect', methods=['POST'])
-def connect():
+@app.route('/stop', methods=['POST'])
+def stop():
+     #Stop the automatic updates
+     flash('Updates halted.')
+     session['updates_paused'] = True
+     global gConn
+     gConn.Pause()
+     return redirect(url_for('vehicle_data'))
+
+@app.route('/single', methods=['POST'])
+def single():
      #make a global socket
-     flash('Sorry, obsolete command.')
-     return render_template('vehicle_controls.html')
-#     return redirect(url_for('vehicle_data'))
+     flash('Single packet sent.')
+     global gConn
+     gConn.SingleUpdate()
+     return redirect(url_for('vehicle_data'))
+
+@app.route('/start', methods=['POST'])
+def start():
+     #make a global socket
+     flash('Updates resumed.')
+     session.pop('updates_paused', None)
+     global gConn
+     gConn.Resume()
+     return redirect(url_for('vehicle_data'))
 
 @app.route('/update', methods=['POST'])
 def update_steering_wheel():
@@ -57,26 +76,6 @@ def update_steering_wheel():
      global gConn
      gConn.update_angle(angle)
      return redirect(url_for('vehicle_data'))
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
-        else:
-            session['logged_in'] = True
-            flash('You were logged in')
-            return redirect(url_for('vehicle_data'))
-    return render_template('login.html', error=error)
-
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    flash('You were logged out')
-    return redirect(url_for('vehicle_data'))
 
 if __name__ == '__main__':
      print 'Running Main...'

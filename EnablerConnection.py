@@ -7,8 +7,9 @@ class EnablerConnection():
         self.initialize_data()
         print 'Enabler Connection created!'
 
-        global gConnections
-        gConnections = []
+        self.Connections = []
+
+        self.Stopped = False
         
         t = threading.Thread(target=self.listen_loop)
         t.setDaemon(True)
@@ -47,21 +48,28 @@ class EnablerConnection():
         self.s.bind(('', port))                
         self.s.listen(1)
         print 'Listening for a connection on port ' + str(port) + '...'
-        global gConnections
         while True:
             conn, addr = self.s.accept()
             print "New connection received."
-            gConnections.append(conn)
+            self.Connections.append(conn)
 
     def send_loop(self):
-        global gConnections
         while True:
-            for connection in gConnections:
-                try:
-                    self.send("{\"name\":\"steering_wheel_angle\",\"value\":\"" + str(self.steeringWheelAngle) + "\"}\n", connection)
-                except:
-                    #No recovery.  If ANYTHING goes wrong, drop the connection.
-                    gConnections.remove(connection)
-                    print "Connection dropped."
-            time.sleep(0.16)
+            if not self.Stopped:
+                self.SingleUpdate()
+                time.sleep(0.16)
 
+    def Pause(self):
+        self.Stopped = True
+
+    def Resume(self):
+        self.Stopped = False
+
+    def SingleUpdate(self):
+        for connection in self.Connections:
+            try:
+                self.send("{\"name\":\"steering_wheel_angle\",\"value\":\"" + str(self.steeringWheelAngle) + ".0\"}\n", connection)
+            except:
+                #No recovery.  If ANYTHING goes wrong, drop the connection.
+                self.Connections.remove(connection)
+                print "Connection dropped."
