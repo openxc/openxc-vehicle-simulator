@@ -68,7 +68,7 @@ class EnablerConnection():
     def SingleUpdate(self):
         for connection in self.Connections:
             try:
-                self.send("{\"name\":\"steering_wheel_angle\",\"value\":\"" + str(self.steeringWheelAngle) + ".0\"}\n", connection)
+                self.send("{\"name\":\"steering_wheel_angle\",\"value\":" + str(self.steeringWheelAngle) + ".0}\n", connection)
             except:
                 #No recovery.  If ANYTHING goes wrong, drop the connection.
                 self.Connections.remove(connection)
