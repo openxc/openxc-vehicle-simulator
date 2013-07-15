@@ -6,7 +6,7 @@ import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
 from contextlib import closing
-import EnablerConnection
+import StateManager
 
 # configuration
 DATABASE = '/tmp/flaskr.db'
@@ -47,16 +47,16 @@ def stop():
      #Stop the automatic updates
      flash('Updates halted.')
      session['updates_paused'] = True
-     global gConn
-     gConn.Pause()
+     global gState
+     gState.Pause()
      return redirect(url_for('vehicle_data'))
 
 @app.route('/single', methods=['POST'])
 def single():
      #make a global socket
      flash('Single packet sent.')
-     global gConn
-     gConn.SingleUpdate()
+     global gState
+     gState.SingleUpdate()
      return redirect(url_for('vehicle_data'))
 
 @app.route('/start', methods=['POST'])
@@ -64,8 +64,8 @@ def start():
      #make a global socket
      flash('Updates resumed.')
      session.pop('updates_paused', None)
-     global gConn
-     gConn.Resume()
+     global gState
+     gState.Resume()
      return redirect(url_for('vehicle_data'))
 
 @app.route('/update', methods=['POST'])
@@ -73,16 +73,16 @@ def update_steering_wheel():
      angle = request.form['angle']
      print "New Steering Wheel Angle: " + angle
      flash('Steering Wheel Angle set to ' + angle)
-     global gConn
-     gConn.update_angle(angle)
+     global gState
+     gState.update_angle(angle)
      return redirect(url_for('vehicle_data'))
 
 if __name__ == '__main__':
      print 'Running Main...'
      init_db()
      
-     global gConn
-     gConn = EnablerConnection.EnablerConnection()
+     global gState
+     gState = StateManager.StateManager()
 
      app.run(use_reloader=False)
      
