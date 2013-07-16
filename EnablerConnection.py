@@ -7,7 +7,7 @@ class EnablerConnection():
 
         self.Stopped = False
         
-        t = threading.Thread(target=self.listen_loop)
+        t = threading.Thread(target=self.listen_loop, name="Thread-Connections")
         t.setDaemon(True)
         t.start()
 
@@ -27,8 +27,8 @@ class EnablerConnection():
             try:
                 connection.sendall(outString)
             except Exception as e:
-                print e
-                #No recovery.  If ANYTHING goes wrong, drop the connection.
+                #TODO:  Isolate dropped connection, recover from other things.
+                #For now, no recovery.  If ANYTHING goes wrong, drop the connection.
                 self.Connections.remove(connection)
                 print "Connection dropped."
 
@@ -44,4 +44,5 @@ class EnablerConnection():
             print "New connection received."
             self.Connections.append(conn)
 
-    
+    def send_JSON(self, name, value):
+        self.send("{\"name\":\"" + name + "\",\"value\":" + str(value) + "}\n")

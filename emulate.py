@@ -48,7 +48,7 @@ def stop():
      flash('Updates halted.')
      session['updates_paused'] = True
      global gState
-     gState.Pause()
+     gState.pause()
      return redirect(url_for('vehicle_data'))
 
 @app.route('/single', methods=['POST'])
@@ -56,7 +56,7 @@ def single():
      #make a global socket
      flash('Single packet sent.')
      global gState
-     gState.SingleUpdate()
+     gState.update_once()
      return redirect(url_for('vehicle_data'))
 
 @app.route('/start', methods=['POST'])
@@ -65,16 +65,28 @@ def start():
      flash('Updates resumed.')
      session.pop('updates_paused', None)
      global gState
-     gState.Resume()
+     gState.resume()
      return redirect(url_for('vehicle_data'))
 
-@app.route('/update', methods=['POST'])
+@app.route('/steering', methods=['POST'])
 def update_steering_wheel():
-     angle = request.form['angle']
-     print "New Steering Wheel Angle: " + angle
-     flash('Steering Wheel Angle set to ' + angle)
+     angle = float(request.form['angle'])
+     print "New Steering Wheel Angle: " + str(angle)
+     flash('Steering Wheel Angle set to ' + str(angle))
      global gState
      gState.update_angle(angle)
+     return redirect(url_for('vehicle_data'))
+
+@app.route('/accelerator', methods=['POST'])
+def update_accelerator():
+     accelerator = float(request.form['accelerator'])
+     if (accelerator >= 0) and (accelerator <= 100):
+          print "New Accelerator Position: " + str(accelerator)
+          flash('Accelerator Percentage set to ' + str(accelerator))
+          global gState
+          gState.update_accelerator(accelerator)
+     else:
+          flash('Accelerator Percentage must be between 0 and 100.')
      return redirect(url_for('vehicle_data'))
 
 if __name__ == '__main__':

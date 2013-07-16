@@ -7,6 +7,13 @@
        <dd><input type=submit value=Update>
       </dl>
     </form>
+      <form action="{{ url_for('update_accelerator') }}" method=post class=add-entry>
+      <dl>
+        <dt>New Accelerator Pedal Position:
+        <dd><input type=text size=30 name=accelerator>
+       <dd><input type=submit value=Update>
+      </dl>
+    </form>
       {% if session.updates_paused %}
       <form action="{{ url_for('single') }}" method=post class=add-entry>
       <dl>
