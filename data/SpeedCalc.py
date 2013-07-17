@@ -14,7 +14,16 @@ class SpeedCalc(DataCalc):
     def put(self, new_value):
         self.speed = new_value
 
-    def iterate(self, accelerator_percent):  # Any necessary data should be passed in
+    def iterate(self, accelerator_percent):
+        target_speed = accelerator_percent * 1.5
+
+        speed_difference = target_speed - self.speed
+
+        speed_difference = speed_difference * 0.001
+
+        self.speed = self.speed + speed_difference
+        
+    def proper_iterate(self, accelerator_percent):  # Any necessary data should be passed in
         AIR_DRAG_COEFFICIENT = .1
         ENGINE_DRAG_COEFFICIENT = .1
         ROAD_FRICTION = .1
