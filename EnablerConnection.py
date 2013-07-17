@@ -11,6 +11,8 @@ class EnablerConnection():
         t.setDaemon(True)
         t.start()
 
+        self.local_ip = socket.gethostbyname(socket.gethostname())
+
     def create_socket_connection(self, host, port):
         #create the network socket connection
         print 'Creating connection...'
@@ -41,8 +43,11 @@ class EnablerConnection():
         print 'Listening for a connection on port ' + str(port) + '...'
         while True:
             conn, addr = self.s.accept()
-            print "New connection received."
+            print "New connection to " + str(addr)
             self.Connections.append(conn)
 
     def send_JSON(self, name, value):
         self.send("{\"name\":\"" + name + "\",\"value\":" + str(value) + "}\n")
+
+    def local_IP(self):
+        return self.local_ip

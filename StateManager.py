@@ -54,3 +54,6 @@ class StateManager():
 
     def update_once(self):
         self.Conn.send_JSON("steering_wheel_angle", self.steering_wheel_angle)
+
+    def local_IP(self):
+        return self.Conn.local_IP()

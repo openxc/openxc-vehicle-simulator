@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
+Connect the OpenXC Enabler to {{ IP }}, port 50001
     <form action="{{ url_for('update_steering_wheel') }}" method=post class=add-entry>
       <dl><dt>Steering Wheel Angle
         <dd>Current Value: {{ angle }}</dd>
