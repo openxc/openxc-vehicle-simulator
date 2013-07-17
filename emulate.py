@@ -39,8 +39,9 @@ def teardown_request(exception):
         db.close()
 
 @app.route('/')
-def vehicle_data():
-    return render_template('vehicle_controls.html')
+def vehicle_data():     
+     global gState
+     return render_template('vehicle_controls.html', accelerator=gState.get_accelerator(), angle=gState.get_angle())
 
 @app.route('/stop', methods=['POST'])
 def stop():

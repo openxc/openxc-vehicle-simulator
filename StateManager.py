@@ -23,6 +23,12 @@ class StateManager():
     def update_angle(self, angle):
         self.steering_wheel_angle = angle
 
+    def get_angle(self):
+        return self.steering_wheel_angle
+
+    def get_accelerator(self):
+        return self.accelerator
+
     def update_accelerator(self, new_value):
         self.accelerator = new_value
         self.VDM.set_accel(new_value)

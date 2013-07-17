@@ -1,17 +1,15 @@
 {% extends "layout.html" %}
 {% block body %}
     <form action="{{ url_for('update_steering_wheel') }}" method=post class=add-entry>
-      <dl>
-        <dt>New Steering Wheel Angle:
-        <dd><input type=text size=30 name=angle>
-       <dd><input type=submit value=Update>
+      <dl><dt>Steering Wheel Angle
+        <dd>Current Value: {{ angle }}</dd>
+        <dd>New Value: <input type=text size=30 name=angle><input type=submit value=Update></dd>
       </dl>
     </form>
       <form action="{{ url_for('update_accelerator') }}" method=post class=add-entry>
-      <dl>
-        <dt>New Accelerator Pedal Position:
-        <dd><input type=text size=30 name=accelerator>
-       <dd><input type=submit value=Update>
+      <dl><dt>Accelerator Percentage
+        <dd>Current Value: {{ accelerator }}
+        <dd>New Value: <input type=text size=30 name=accelerator><input type=submit value=Update>
       </dl>
     </form>
       {% if session.updates_paused %}
