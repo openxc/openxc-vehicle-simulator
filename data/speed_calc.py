@@ -1,4 +1,4 @@
-from DataCalc import DataCalc
+from .data_calc import DataCalc
 import math
 
 class SpeedCalc(DataCalc):
@@ -22,7 +22,7 @@ class SpeedCalc(DataCalc):
         speed_difference = speed_difference * 0.001
 
         self.speed = self.speed + speed_difference
-        
+
     def proper_iterate(self, accelerator_percent):  # Any necessary data should be passed in
         AIR_DRAG_COEFFICIENT = .1
         ENGINE_DRAG_COEFFICIENT = .1
@@ -30,7 +30,7 @@ class SpeedCalc(DataCalc):
         ENGINE_V0_FORCE = 100000
         CAR_MASS = 500
         TIME_STEP = .01
-        
+
         air_drag = self.speed * self.speed * AIR_DRAG_COEFFICIENT
 
         engine_drag = self.speed * ENGINE_DRAG_COEFFICIENT

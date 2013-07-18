@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
 # all the imports
-from __future__ import with_statement
+
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
-     abort, render_template, flash
+        render_template, flash
 from contextlib import closing
-import StateManager
+import state_manager
 
 # configuration
-DATABASE = '/tmp/flaskr.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
@@ -19,29 +18,11 @@ PASSWORD = 'default'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-def connect_db():
-    return sqlite3.connect(app.config['DATABASE'])
-
-def init_db():
-    with closing(connect_db()) as db:
-        with app.open_resource('schema.sql') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
-@app.before_request
-def before_request():
-    g.db = connect_db()
-
-@app.teardown_request
-def teardown_request(exception):
-    db = getattr(g, 'db', None)
-    if db is not None:
-        db.close()
-
 @app.route('/')
-def vehicle_data():     
+def vehicle_data():
      global gState
-     return render_template('vehicle_controls.html', IP=gState.local_IP(), accelerator=gState.get_accelerator(), angle=gState.get_angle())
+     return render_template('vehicle_controls.html', IP=gState.local_ip(),
+             accelerator=gState.accelerator_pedal_position, angle=gState.steering_wheel_angle)
 
 @app.route('/stop', methods=['POST'])
 def stop():
@@ -72,30 +53,30 @@ def start():
 @app.route('/steering', methods=['POST'])
 def update_steering_wheel():
      angle = float(request.form['angle'])
-     print "New Steering Wheel Angle: " + str(angle)
-     flash('Steering Wheel Angle set to ' + str(angle))
+     msg = 'Steering Wheel Angle set to %d' % angle
+     print(msg)
+     flash(msg)
      global gState
-     gState.update_angle(angle)
+     gState.steering_wheel_angle = angle
      return redirect(url_for('vehicle_data'))
 
 @app.route('/accelerator', methods=['POST'])
 def update_accelerator():
      accelerator = float(request.form['accelerator'])
      if (accelerator >= 0) and (accelerator <= 100):
-          print "New Accelerator Position: " + str(accelerator)
-          flash('Accelerator Percentage set to ' + str(accelerator))
+          msg = "Accelerator Percentage set to %d" % accelerator
+          print(msg)
+          flash(msg)
           global gState
-          gState.update_accelerator(accelerator)
+          gState.accelerator_pedal_position = accelerator
      else:
           flash('Accelerator Percentage must be between 0 and 100.')
      return redirect(url_for('vehicle_data'))
 
 if __name__ == '__main__':
-     print 'Running Main...'
-     init_db()
-     
+     print('Running Main...')
+
      global gState
-     gState = StateManager.StateManager()
+     gState = state_manager.StateManager()
 
      app.run(use_reloader=False)
-     
