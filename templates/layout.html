@@ -3,6 +3,11 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
   <h1>OpenXC Vehicle Emulator</h1>
+  {% if IP == '127.0.0.1' %}
+  Connect the OpenXC Enabler to this machine's IP address, port 50001
+  {% else %}
+  Connect the OpenXC Enabler to {{ IP }}, port 50001
+  {% endif %}
   <div class=metanav>
   </div>
   {% for message in get_flashed_messages() %}
