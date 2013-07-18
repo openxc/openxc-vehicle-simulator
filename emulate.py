@@ -76,7 +76,6 @@ def update_accelerator():
 
 if __name__ == '__main__':
      print('Running Main...')
-
      global gState
      gState = state_manager.StateManager()
 
