@@ -3,7 +3,7 @@ import dynamics_model
 import threading
 import time
 
-class StateManager():
+class StateManager(object):
     def __init__(self):
         self.stopped = False
         self.initialize_data()

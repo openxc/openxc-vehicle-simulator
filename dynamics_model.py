@@ -3,7 +3,7 @@ import time
 
 from data import speed_calc
 
-class DynamicsModel():
+class DynamicsModel(object):
     def __init__(self):
         self._initialize_data()
 

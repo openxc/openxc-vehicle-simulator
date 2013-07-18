@@ -22,7 +22,8 @@ app.config.from_object(__name__)
 def vehicle_data():
      global gState
      return render_template('vehicle_controls.html', IP=gState.local_ip(),
-             accelerator=gState.accelerator_pedal_position, angle=gState.steering_wheel_angle)
+             accelerator=gState.accelerator_pedal_position,
+             angle=gState.steering_wheel_angle)
 
 @app.route('/stop', methods=['POST'])
 def stop():

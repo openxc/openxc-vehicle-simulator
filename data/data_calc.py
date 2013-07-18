@@ -1,4 +1,4 @@
-class DataCalc():
+class DataCalc(object):
     def __init__(self):
         initialize_data()
 
@@ -13,4 +13,4 @@ class DataCalc():
 
     def iterate(self, data):  # Any necessary data should be passed in
         return
-        
+
