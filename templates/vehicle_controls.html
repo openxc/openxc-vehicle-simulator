@@ -1,18 +1,20 @@
 {% extends "layout.html" %}
 {% block body %}
-    <form action="{{ url_for('update_steering_wheel') }}" method=post class=add-entry>
-      <dl><dt>Steering Wheel Angle
-        <dd>Current Value: {{ angle }}</dd>
-        <dd>New Value: <input type=text size=30 name=angle><input type=submit value=Update></dd>
-      </dl>
+
+Vehicle Controls:
+    <form id="accelerator_form">
+        <label for="accelerator">Accelerator Pedal Percentage:</label>
+        <input type="number" name="accelerator"
+            id="accelerator" min="0.0" max="100.0" step="1.0" value="0"/>
     </form>
-      <form action="{{ url_for('update_accelerator') }}" method=post class=add-entry>
-      <dl><dt>Accelerator Percentage
-        <dd>Current Value: {{ accelerator }}
-        <dd>New Value: <input type=text size=30 name=accelerator><input type=submit value=Update>
-      </dl>
+
+    <form id="steering_wheel_form">
+        <label for="steering_wheel">Steering Wheel Angle:</label>
+        <input type="number" name="steering_wheel"
+            id="steering_wheel" min="-600" max="600" step="1.0" value="0"/>
     </form>
-      {% if session.updates_paused %}
+
+     {% if session.updates_paused %}
       <form action="{{ url_for('single') }}" method=post class=add-entry>
       <dl>
        <dd><input type=submit value="Single Update">
@@ -29,5 +31,10 @@
        <dd><input type=submit value=Pause>
       </dl>
       </form>
+      <table>Vehicle Dynamics Data:
+        <tr><td>Vehicle Speed: </td><td id="vehicle_speed"></td><td>kph</td></tr>
+     </table>
+
       {% endif %}
+
 {% endblock %}

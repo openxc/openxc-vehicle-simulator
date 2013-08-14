@@ -4,7 +4,7 @@
 
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
-        render_template, flash
+        render_template, flash, jsonify
 from contextlib import closing
 import state_manager
 
@@ -21,7 +21,7 @@ app.config.from_object(__name__)
 @app.route('/')
 def vehicle_data():
      global gState
-     return render_template('vehicle_controls.html', IP=gState.local_ip(),
+     return render_template('vehicle_controls.html', IP=gState.local_ip,
              accelerator=gState.accelerator_pedal_position,
              angle=gState.steering_wheel_angle)
 
@@ -63,6 +63,7 @@ def update_steering_wheel():
 
 @app.route('/accelerator', methods=['POST'])
 def update_accelerator():
+     print str(request.form['accelerator'])
      accelerator = float(request.form['accelerator'])
      if (accelerator >= 0) and (accelerator <= 100):
           msg = "Accelerator Percentage set to %d" % accelerator
@@ -73,6 +74,11 @@ def update_accelerator():
      else:
           flash('Accelerator Percentage must be between 0 and 100.')
      return redirect(url_for('vehicle_data'))
+
+@app.route('/_get_data')
+def get_data():
+     return jsonify(vehicle_speed=gState.vehicle_speed)
+     #return str(gState.vehicle_speed)
 
 if __name__ == '__main__':
      print('Running Main...')

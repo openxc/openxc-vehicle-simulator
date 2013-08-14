@@ -19,6 +19,8 @@ class StateManager(object):
     def initialize_data(self):
         self.steering_wheel_angle = 0
 
+# Properties -------------------
+
     @property
     def accelerator_pedal_position(self):
         return self.dynamics_model.accelerator
@@ -26,6 +28,17 @@ class StateManager(object):
     @accelerator_pedal_position.setter
     def accelerator_pedal_position(self, value):
         self.dynamics_model.accelerator = value
+
+    @property
+    def local_ip(self):
+        return self.connection.local_ip
+
+    @property
+    def vehicle_speed(self):
+        return self.dynamics_model.vehicle_speed
+
+
+# Sending Data ------------------
 
     def start_send_loop(self, function, thread_name):
         t = threading.Thread(target=self.send_loop, args=[function], name=thread_name)
@@ -65,6 +78,3 @@ class StateManager(object):
 
     def update_once(self):
         self.connection.send_measurement("steering_wheel_angle", self.steering_wheel_angle)
-
-    def local_ip(self):
-        return self.connection.local_ip

@@ -1,17 +1,36 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
-<title>OpenXC Vehicle Emulator</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<div class=page>
-  <h1>OpenXC Vehicle Emulator</h1>
-  {% if IP == '127.0.0.1' %}
-  Connect the OpenXC Enabler to this machine's IP address, port 50001
-  {% else %}
-  Connect the OpenXC Enabler to {{ IP }}, port 50001
-  {% endif %}
-  <div class=metanav>
-  </div>
-  {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-  {% endfor %}
-  {% block body %}{% endblock %}
-</div>
+<!doctype html>
+<html>
+<head>
+    <title>OpenXC Vehicle Emulator</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static',
+filename='style.css') }}">
+
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
+    <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+
+    <script src="{{ url_for('static', filename='emulator_scripts.js') }}"></script>
+
+</head>
+<body>
+    <div class=page>
+        <h1>OpenXC Vehicle Emulator</h1>
+        {% if IP == '127.0.0.1' %}
+            Connect the OpenXC Enabler to this machine's IP address, port 50001
+        {% else %}
+            Connect the OpenXC Enabler to {{ IP }}, port 50001
+        {% endif %}
+        <div class=metanav></div>
+        {% for message in get_flashed_messages() %}
+            <div class=flash>{{ message }}</div>
+        {% endfor %}
+
+        {% block body %}{% endblock %}
+    </div>
+</body>
+</html>
