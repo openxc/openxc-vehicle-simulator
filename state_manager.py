@@ -37,6 +37,9 @@ class StateManager(object):
     def vehicle_speed(self):
         return self.dynamics_model.vehicle_speed
 
+    @property
+    def fuel_consumed(self):
+        return self.dynamics_model.fuel_consumed
 
 # Sending Data ------------------
 

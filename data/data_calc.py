@@ -1,6 +1,6 @@
 class DataCalc(object):
     def __init__(self):
-        initialize_data()
+        self.initialize_data()
 
     def initialize_data(self):
         self.data = 0

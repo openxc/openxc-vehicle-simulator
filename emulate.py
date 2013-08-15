@@ -63,7 +63,6 @@ def update_steering_wheel():
 
 @app.route('/accelerator', methods=['POST'])
 def update_accelerator():
-     print str(request.form['accelerator'])
      accelerator = float(request.form['accelerator'])
      if (accelerator >= 0) and (accelerator <= 100):
           msg = "Accelerator Percentage set to %d" % accelerator
@@ -77,8 +76,8 @@ def update_accelerator():
 
 @app.route('/_get_data')
 def get_data():
-     return jsonify(vehicle_speed=gState.vehicle_speed)
-     #return str(gState.vehicle_speed)
+     return jsonify(vehicle_speed=gState.vehicle_speed,
+                    fuel_consumed_since_restart=gState.fuel_consumed )
 
 if __name__ == '__main__':
      print('Running Main...')
