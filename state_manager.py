@@ -12,6 +12,7 @@ class StateManager(object):
 
         self.start_send_loop(self.send_loop_4Hz, "Thread-4Hz")
         self.start_send_loop(self.send_loop_6Hz, "Thread-6Hz")
+        self.start_send_loop(self.send_loop_10Hz, "Thread-10Hz")
         self.start_send_loop(self.send_loop_60Hz, "Thread-60Hz")
 
         print('State Manager initialized')
@@ -41,6 +42,10 @@ class StateManager(object):
     def fuel_consumed(self):
         return self.dynamics_model.fuel_consumed
 
+    @property
+    def dynamics_data(self):
+        return self.dynamics_model.data
+
 # Sending Data ------------------
 
     def start_send_loop(self, function, thread_name):
@@ -66,6 +71,15 @@ class StateManager(object):
         self.connection.send_measurement("steering_wheel_angle",
                         self.steering_wheel_angle)
         time.sleep(SLEEP_6HZ)
+
+    def send_loop_10Hz(self):
+        SLEEP_10HZ = 1.0 / (10 * 2)  # 1 second / 6Hz, / # of data points.
+        self.connection.send_measurement("fuel_consumed_since_restart",
+                        self.dynamics_model.fuel_consumed)
+        time.sleep(SLEEP_10HZ)
+        self.connection.send_measurement("odometer",
+                        self.dynamics_model.odometer)
+        time.sleep(SLEEP_10HZ)
 
     def send_loop_60Hz(self):
         SLEEP_60HZ = 1.0 / (60 * 1)  # 1 second / 6Hz, / # of data points.

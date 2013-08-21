@@ -76,12 +76,11 @@ def update_accelerator():
 
 @app.route('/_get_data')
 def get_data():
-     return jsonify(vehicle_speed=gState.vehicle_speed,
-                    fuel_consumed_since_restart=gState.fuel_consumed )
+     return gState.dynamics_data
 
 if __name__ == '__main__':
      print('Running Main...')
      global gState
      gState = state_manager.StateManager()
 
-     app.run(use_reloader=False)
+     app.run(use_reloader=False, host='0.0.0.0')
