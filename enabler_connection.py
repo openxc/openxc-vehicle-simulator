@@ -7,11 +7,11 @@ class EnablerConnection():
 
         self.stopped = False
 
+        self.local_ip = socket.gethostbyname(socket.gethostname())
+
         t = threading.Thread(target=self.listen_loop, name="Thread-connections")
         t.setDaemon(True)
         t.start()
-
-        self.local_ip = socket.gethostbyname(socket.gethostname())
 
     def create_socket_connection(self, host, port):
         #create the network socket connection
@@ -41,7 +41,8 @@ class EnablerConnection():
         self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.s.bind(('', port))
         self.s.listen(1)
-        print('Listening for a connection on port ' + str(port) + '...')
+        print('For the UI, navigate a browser to ' + str(self.local_ip) + ':5000')
+        print('Set OpenXC Enabler network connections to ' + str(self.local_ip) + ', port ' + str(port))
         while True:
             conn, addr = self.s.accept()
             print("New connection to " + str(addr))
@@ -49,6 +50,3 @@ class EnablerConnection():
 
     def send_measurement(self, name, value):
         self.send("{\"name\":\"" + name + "\",\"value\":" + str(value) + "}\n")
-
-    def local_ip(self):
-        return self.local_ip
