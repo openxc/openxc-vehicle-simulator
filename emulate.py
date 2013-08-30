@@ -79,7 +79,6 @@ def get_data():
      return gState.dynamics_data
 
 if __name__ == '__main__':
-     print('Running Main...')
      global gState
      gState = state_manager.StateManager()
 

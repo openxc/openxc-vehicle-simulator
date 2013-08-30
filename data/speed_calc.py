@@ -7,37 +7,26 @@ class SpeedCalc(DataCalc):
         self.initialize_data()
 
     def initialize_data(self):
-        self.speed = 0.0
+        self.data = 0.0
         self.last_calc = datetime.now()
 
-    def get(self):
-        return self.speed
-
-    def old_iterate(self, accelerator_percent):
-        target_speed = accelerator_percent * 1.5
-
-        speed_difference = target_speed - self.speed
-
-        speed_difference = speed_difference * 0.001
-
-        self.speed = self.speed + speed_difference
-
     def iterate(self, accelerator_percent):  # Any necessary data should be passed in
-        AIR_DRAG_COEFFICIENT = .000006
-        ENGINE_DRAG_COEFFICIENT = 0
+        AIR_DRAG_COEFFICIENT = .000008
+        ENGINE_DRAG_COEFFICIENT = 0.02
         ENGINE_V0_FORCE = 20 #units are cars*km/s^2
         CAR_MASS = 1  # Specifically, one car.
+        speed = self.data  #Just to avoid confution
 
-        air_drag = self.speed * self.speed * self.speed * AIR_DRAG_COEFFICIENT
+        air_drag = speed * speed * speed * AIR_DRAG_COEFFICIENT
         
-        engine_drag = self.speed * ENGINE_DRAG_COEFFICIENT
+        engine_drag = speed * ENGINE_DRAG_COEFFICIENT
 
         engine_force = (ENGINE_V0_FORCE * accelerator_percent / 100)  # accelerator_percent is 0.0 to 100.0, not 0
 
-        if self.speed > 0.01:
-            road_friction = .01
+        if speed > 0.1:
+            road_friction = .1
         else:
-            road_friction = self.speed
+            road_friction = speed
         
         acceleration = engine_force - air_drag - engine_drag - road_friction
         
@@ -47,4 +36,4 @@ class SpeedCalc(DataCalc):
         time_step = time_delta.seconds + (float(time_delta.microseconds) / 1000000)
         self.last_calc = current_time
 
-        self.speed = self.speed + ( acceleration * time_step)
+        self.data = speed + ( acceleration * time_step)

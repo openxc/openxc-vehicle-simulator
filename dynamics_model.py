@@ -2,6 +2,7 @@ import threading
 import time
 import math
 from flask import jsonify
+import datetime
 
 from data import speed_calc
 from data import fuel_consumed_calc
@@ -21,17 +22,25 @@ class DynamicsModel(object):
         self.speed_data = speed_calc.SpeedCalc()
         self.fuel_consumed_data = fuel_consumed_calc.FuelConsumedCalc()
         self.odometer_data = odometer_calc.OdometerCalc()
+
+        self.delay_100Hz = datetime.timedelta(0,0,10000)
+        self.next_iterate = datetime.datetime.now() + self.delay_100Hz
+        self.zero_timedelta = datetime.timedelta(0,0,0)
+
         self.accelerator = 0.0
 
     def physics_loop(self):
         while True:
+            time_til_calc = self.next_iterate - datetime.datetime.now()
+            if time_til_calc > self.zero_timedelta:
+                time.sleep(time_til_calc.microseconds / 1000000.0)
+                #Assuming less than a second.
+            self.next_iterate = self.next_iterate + self.delay_100Hz
+            
             self.speed_data.iterate(self.accelerator)
-            time.sleep(0.0034)
             self.fuel_consumed_data.iterate(self.accelerator)
-            time.sleep(0.0034)
             self.odometer_data.iterate(self.vehicle_speed)
-            time.sleep(0.0034)
-
+            
     @property
     def vehicle_speed(self):
         return math.fabs(self.speed_data.get())
