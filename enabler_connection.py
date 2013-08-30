@@ -7,8 +7,8 @@ class EnablerConnection():
 
         self.stopped = False
 
-        self.local_ip = socket.gethostbyname(socket.gethostname())
-        #self.local_ip = '192.168.1.9'
+        #self.local_ip = socket.gethostbyname(socket.gethostname())
+        self.local_ip = '192.168.1.8'
 
         t = threading.Thread(target=self.listen_loop, name="Thread-connections")
         t.setDaemon(True)
@@ -39,4 +39,9 @@ class EnablerConnection():
             self.connections.append(conn)
 
     def send_measurement(self, name, value):
+        if (type(value) == bool):
+            if value:
+                value = "true"
+            else:
+                value = "false"
         self.send("{\"name\":\"" + name + "\",\"value\":" + str(value) + "}\n")

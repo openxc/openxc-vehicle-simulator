@@ -28,7 +28,6 @@ def vehicle_data():
 @app.route('/stop', methods=['POST'])
 def stop():
      #Stop the automatic updates
-     flash('Updates halted.')
      session['updates_paused'] = True
      global gState
      gState.pause()
@@ -37,7 +36,6 @@ def stop():
 @app.route('/single', methods=['POST'])
 def single():
      #make a global socket
-     flash('Single packet sent.')
      global gState
      gState.update_once()
      return redirect(url_for('vehicle_data'))
@@ -45,33 +43,36 @@ def single():
 @app.route('/start', methods=['POST'])
 def start():
      #make a global socket
-     flash('Updates resumed.')
      session.pop('updates_paused', None)
      global gState
      gState.resume()
      return redirect(url_for('vehicle_data'))
 
-@app.route('/steering', methods=['POST'])
-def update_steering_wheel():
-     angle = float(request.form['angle'])
-     msg = 'Steering Wheel Angle set to %d' % angle
-     print(msg)
-     flash(msg)
+@app.route('/_set_data', methods=['POST'])
+def set_data():
      global gState
-     gState.steering_wheel_angle = angle
-     return redirect(url_for('vehicle_data'))
+     
+     try:
+          angle = float(request.form['angle'])
+          if angle is not None:
+               gState.steering_wheel_angle = angle
+     except:
+          pass
 
-@app.route('/accelerator', methods=['POST'])
-def update_accelerator():
-     accelerator = float(request.form['accelerator'])
-     if (accelerator >= 0) and (accelerator <= 100):
-          msg = "Accelerator Percentage set to %d" % accelerator
-          print(msg)
-          flash(msg)
-          global gState
-          gState.accelerator_pedal_position = accelerator
-     else:
-          flash('Accelerator Percentage must be between 0 and 100.')
+     try:
+          accelerator = float(request.form['accelerator'])
+          if accelerator is not None:
+               gState.accelerator_pedal_position = accelerator
+     except:
+          pass
+
+     try:
+          brake = float(request.form['brake'])
+          if brake is not None:
+               gState.brake_pedal_position = brake
+     except:
+          pass
+
      return redirect(url_for('vehicle_data'))
 
 @app.route('/_get_data')

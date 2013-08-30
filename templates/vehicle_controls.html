@@ -2,17 +2,24 @@
 {% block body %}
 
 Vehicle Controls:
-    <form id="accelerator_form">
+<form id="steering_wheel_form">
+        <label for="steering_wheel">Steering Wheel Angle:</label>
+        <input type="number" name="steering_wheel"
+            id="steering_wheel" min="-600.0" max="600.0" step="1.0" value="0"/>
+    </form>
+
+<form id="accelerator_form">
         <label for="accelerator">Accelerator Pedal Percentage:</label>
         <input type="number" name="accelerator"
             id="accelerator" min="0.0" max="100.0" step="1.0" value="0"/>
     </form>
 
-    <form id="steering_wheel_form">
-        <label for="steering_wheel">Steering Wheel Angle:</label>
-        <input type="number" name="steering_wheel"
-            id="steering_wheel" min="-600" max="600" step="1.0" value="0"/>
+<form id="brake_form">
+        <label for="brake">Brake Pedal Percentage:</label>
+        <input type="number" name="brake"
+            id="brake" min="0.0" max="100.0" step="1.0" value="0"/>
     </form>
+
 
      {% if session.updates_paused %}
       <form action="{{ url_for('single') }}" method=post class=add-entry>
@@ -32,6 +39,8 @@ Vehicle Controls:
       </dl>
       </form>
       <table>Vehicle Dynamics Data:
+        <tr><td>Torque at Transmission: </td><td id="torque"></td><td>Nm</td></tr>
+        <tr><td>Engine Speed: </td><td id="engine_speed"></td><td>RPM</td></tr>
         <tr><td>Vehicle Speed: </td><td id="vehicle_speed"></td><td>km/hr</td></tr>
         <tr><td>Fuel Consumed Since Restart: </td><td id="fuel_consumed"></td><td>L</td></tr>
         <tr><td>Odometer: </td><td id="odometer"></td><td>km</td></tr>
