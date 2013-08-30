@@ -6,25 +6,33 @@ import time
 class StateManager(object):
     def __init__(self):
         self.stopped = False
-        self.initialize_data()
         self.connection = enabler_connection.EnablerConnection()
         self.dynamics_model = dynamics_model.DynamicsModel()
 
+        self.SLEEP_1HZ = 1.0 / 2  # 1 second / # of data points.
+        self.start_send_loop(self.send_loop_1Hz, "Thread-1Hz")
         self.SLEEP_4HZ = 1.0 / (4 * 2)  # 1 second / 4Hz, / # of data points.
         self.start_send_loop(self.send_loop_4Hz, "Thread-4Hz")
         self.SLEEP_6HZ = 1.0 / (6 * 1)  # 1 second / 6Hz, / # of data points.
         self.start_send_loop(self.send_loop_6Hz, "Thread-6Hz")
-        self.SLEEP_10HZ = 1.0 / (10 * 2)  # 1 second / 6Hz, / # of data points.
+        self.SLEEP_10HZ = 1.0 / (10 * 2)  # 1 second / 10Hz, / # of data points.
         self.start_send_loop(self.send_loop_10Hz, "Thread-10Hz")
-        self.SLEEP_60HZ = 1.0 / (60 * 2)  # 1 second / 6Hz, / # of data points.
+        self.SLEEP_48HZ = 1.0 / (48 * 1)  # 1 second / 48Hz, / # of data points.
+        self.start_send_loop(self.send_loop_48Hz, "Thread-48Hz")
+        self.SLEEP_60HZ = 1.0 / (60 * 2)  # 1 second / 60Hz, / # of data points.
         self.start_send_loop(self.send_loop_60Hz, "Thread-60Hz")
 
         print('State Manager initialized')
 
-    def initialize_data(self):
-        self.steering_wheel_angle = 0
-
 # Properties -------------------
+
+    @property
+    def steering_wheel_angle(self):
+        return self.dynamics_model.steering_wheel_angle
+
+    @steering_wheel_angle.setter
+    def steering_wheel_angle(self, value):
+        self.dynamics_model.steering_wheel_angle = value
 
     @property
     def accelerator_pedal_position(self):
@@ -52,14 +60,6 @@ class StateManager(object):
         return self.connection.local_ip
 
     @property
-    def vehicle_speed(self):
-        return self.dynamics_model.vehicle_speed
-
-    @property
-    def fuel_consumed(self):
-        return self.dynamics_model.fuel_consumed
-
-    @property
     def dynamics_data(self):
         return self.dynamics_model.data
 
@@ -76,6 +76,14 @@ class StateManager(object):
                 function()
             else:
                 time.sleep(0.5)
+
+    def send_loop_1Hz(self):
+        self.connection.send_measurement("latitiude",
+                        self.dynamics_model.lat)
+        time.sleep(self.SLEEP_1HZ)
+        self.connection.send_measurement("longitude",
+                        self.dynamics_model.lon)
+        time.sleep(self.SLEEP_1HZ)
 
     def send_loop_4Hz(self):
         self.connection.send_measurement("vehicle_speed",
@@ -97,6 +105,11 @@ class StateManager(object):
         self.connection.send_measurement("odometer",
                         self.dynamics_model.odometer)
         time.sleep(self.SLEEP_10HZ)
+
+    def send_loop_48Hz(self):
+        self.connection.send_measurement("fuel_level",
+                        self.dynamics_model.fuel_level)
+        time.sleep(self.SLEEP_48HZ)
 
     def send_loop_60Hz(self):
         self.connection.send_measurement("accelerator_pedal_position",

@@ -9,6 +9,10 @@ from data import torque_calc
 from data import engine_speed_calc
 from data import fuel_consumed_calc
 from data import odometer_calc
+from data import fuel_level_calc
+from data import heading_calc
+from data import lat_calc
+from data import lon_calc
 
 class DynamicsModel(object):
     def __init__(self):
@@ -26,6 +30,10 @@ class DynamicsModel(object):
         self.engine_speed_data = engine_speed_calc.EngineSpeedCalc()
         self.fuel_consumed_data = fuel_consumed_calc.FuelConsumedCalc()
         self.odometer_data = odometer_calc.OdometerCalc()
+        self.fuel_level_data = fuel_level_calc.FuelLevelCalc()
+        self.heading_data = heading_calc.HeadingCalc()
+        self.lat_data = lat_calc.LatCalc()
+        self.lon_data = lon_calc.LonCalc()
 
         self.delay_100Hz = datetime.timedelta(0,0,10000)
         self.next_iterate = datetime.datetime.now() + self.delay_100Hz
@@ -33,6 +41,7 @@ class DynamicsModel(object):
 
         self.accelerator = 0.0
         self.brake = 0.0
+        self.steering_wheel_angle = 0.0
 
     def physics_loop(self):
         while True:
@@ -47,6 +56,10 @@ class DynamicsModel(object):
             self.engine_speed_data.iterate(self.vehicle_speed)
             self.fuel_consumed_data.iterate(self.accelerator)
             self.odometer_data.iterate(self.vehicle_speed)
+            self.fuel_level_data.iterate(self.fuel_consumed)
+            self.heading_data.iterate(self.vehicle_speed, self.steering_wheel_angle)
+            self.lat_data.iterate(self.vehicle_speed, self.heading_data.get())
+            self.lon_data.iterate(self.vehicle_speed, self.heading_data.get(), self.lat)
 
 # Properties  ---------------------
             
@@ -78,9 +91,24 @@ class DynamicsModel(object):
         return self.odometer_data.get()
 
     @property
+    def fuel_level(self):
+        return self.fuel_level_data.get()
+
+    @property
+    def lat(self):
+        return self.lat_data.get()
+
+    @property
+    def lon(self):
+        return self.lon_data.get()
+
+    @property
     def data(self):
         return jsonify(vehicle_speed=self.vehicle_speed,
                        torque_at_transmission=self.torque,
                        engine_speed=self.engine_speed,
                        fuel_consumed_since_restart=self.fuel_consumed,
-                       odometer=self.odometer)
+                       odometer=self.odometer,
+                       fuel_level=self.fuel_level,
+                       latitude=self.lat,
+                       longitude=self.lon)

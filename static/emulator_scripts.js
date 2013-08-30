@@ -61,6 +61,9 @@ $(function() {
         document.getElementById("vehicle_speed").innerHTML = dataJSON.vehicle_speed;
         document.getElementById("fuel_consumed").innerHTML = dataJSON.fuel_consumed_since_restart;
         document.getElementById("odometer").innerHTML = dataJSON.odometer;
+        document.getElementById("fuel_level").innerHTML = dataJSON.fuel_level;
+        document.getElementById("latitude").innerHTML = dataJSON.latitude;
+        document.getElementById("longitude").innerHTML = dataJSON.longitude;
     }
 
     function GetData() {
