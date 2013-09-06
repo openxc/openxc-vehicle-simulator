@@ -7,8 +7,8 @@ class EnablerConnection():
 
         self.stopped = False
 
-        #self.local_ip = socket.gethostbyname(socket.gethostname())
-        self.local_ip = '192.168.1.8'
+        self.local_ip = socket.gethostbyname(socket.gethostname())
+        #self.local_ip = '192.168.1.8'
 
         t = threading.Thread(target=self.listen_loop, name="Thread-connections")
         t.setDaemon(True)

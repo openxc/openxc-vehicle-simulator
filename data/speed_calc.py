@@ -13,7 +13,7 @@ class SpeedCalc(DataCalc):
     def iterate(self, accelerator_percent):  # Any necessary data should be passed in
         AIR_DRAG_COEFFICIENT = .000008
         ENGINE_DRAG_COEFFICIENT = 0.02
-        ENGINE_V0_FORCE = 20 #units are cars*km/s^2
+        ENGINE_V0_FORCE = 20 #units are cars*km/h/s
         CAR_MASS = 1  # Specifically, one car.
         speed = self.data  #Just to avoid confution
 
