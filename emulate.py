@@ -80,6 +80,13 @@ def set_data():
      except:
           pass
 
+     try:
+          ignition_status = python_bool(request.form['ignition_status'])
+          if ignition_status is not None:
+               gState.ignition_status = ignition_status
+     except:
+          pass
+
      return redirect(url_for('vehicle_data'))
 
 def python_bool(value):

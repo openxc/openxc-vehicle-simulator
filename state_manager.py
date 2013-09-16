@@ -66,6 +66,16 @@ class StateManager(object):
                         self.dynamics_model.brake_pedal_status)
 
     @property
+    def ignition_status(self):
+        return self.dynamics_model.ignition_status
+
+    @parking_brake_status.setter
+    def ignition_status(self, value):
+        if value != self.dynamics_model.ignition_status:
+            self.connection.send_measurement("ignition_status", value)
+        self.dynamics_model.ignition_status = value
+
+    @property
     def local_ip(self):
         return self.connection.local_ip
 

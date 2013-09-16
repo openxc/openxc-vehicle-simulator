@@ -10,7 +10,9 @@ class SpeedCalc(DataCalc):
         self.data = 0.0
         self.last_calc = datetime.now()
 
-    def iterate(self, accelerator_percent, brake, parking_brake_status):  # Any necessary data should be passed in
+    def iterate(self, accelerator_percent, brake, parking_brake_status, ignition_status):
+
+        # Any necessary data should be passed in
         AIR_DRAG_COEFFICIENT = .000008
         ENGINE_DRAG_COEFFICIENT = 0.02
         BRAKE_CONSTANT = 0.1
@@ -22,7 +24,11 @@ class SpeedCalc(DataCalc):
         
         engine_drag = speed * ENGINE_DRAG_COEFFICIENT
 
-        engine_force = (ENGINE_V0_FORCE * accelerator_percent / 100)  # accelerator_percent is 0.0 to 100.0, not 0
+        if ignition_status:
+            # accelerator_percent is 0.0 to 100.0, not 0
+            engine_force = (ENGINE_V0_FORCE * accelerator_percent / 100)
+        else:
+            engine_force = 0.0
         
         acceleration = engine_force - air_drag - engine_drag - .1 - (brake * BRAKE_CONSTANT)
 

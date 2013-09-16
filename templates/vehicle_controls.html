@@ -27,6 +27,13 @@ Vehicle Controls:
         id="parking_brake_check" />
 </form>
 
+<br>
+<form id="ignition_form">
+    <label for="ignition_check">Ignition:</label>
+    <input type="checkbox" name="ignition_check"
+        id="ignition_check" />
+</form>
+
 
      {% if session.updates_paused %}
       <form action="{{ url_for('single') }}" method=post class=add-entry>

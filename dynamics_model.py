@@ -43,6 +43,7 @@ class DynamicsModel(object):
         self.brake = 0.0
         self.steering_wheel_angle = 0.0
         self.parking_brake_status = False
+        self.ignition_status = False
 
         self.stopped = False
 
@@ -55,10 +56,11 @@ class DynamicsModel(object):
                     #Assuming less than a second.
                 self.next_iterate = self.next_iterate + self.delay_100Hz
 
-                self.speed_data.iterate(self.accelerator, self.brake, self.parking_brake_status)
+                self.speed_data.iterate(self.accelerator, self.brake, self.parking_brake_status,
+                                        self.ignition_status)
                 self.torque_data.iterate(self.accelerator, self.vehicle_speed)
                 self.engine_speed_data.iterate(self.vehicle_speed)
-                self.fuel_consumed_data.iterate(self.accelerator)
+                self.fuel_consumed_data.iterate(self.accelerator, self.ignition_status)
                 self.odometer_data.iterate(self.vehicle_speed)
                 self.fuel_level_data.iterate(self.fuel_consumed)
                 self.heading_data.iterate(self.vehicle_speed, self.steering_wheel_angle)

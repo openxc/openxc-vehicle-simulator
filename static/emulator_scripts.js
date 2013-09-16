@@ -55,6 +55,12 @@ $(function() {
     });
 });
 
+$(function() {
+    $('#ignition_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { ignition_status: this.checked});
+    });
+});
+
     function StartTimer() {
         setInterval(function(){
             GetData();
