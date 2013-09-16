@@ -73,7 +73,22 @@ def set_data():
      except:
           pass
 
+     try:
+          parking_brake_status = python_bool(request.form['parking_brake_status'])
+          if parking_brake_status is not None:
+               gState.parking_brake_status = parking_brake_status
+     except:
+          pass
+
      return redirect(url_for('vehicle_data'))
+
+def python_bool(value):
+     if value == "true":
+          return True
+     if value == "false":
+          return False
+     else:
+          return None
 
 @app.route('/_get_data')
 def get_data():

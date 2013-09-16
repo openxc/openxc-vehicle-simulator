@@ -7,18 +7,25 @@ Vehicle Controls:
         <input type="number" name="steering_wheel"
             id="steering_wheel" min="-600.0" max="600.0" step="1.0" value="0"/>
     </form>
+<br>
 
 <form id="accelerator_form">
         <label for="accelerator">Accelerator Pedal Percentage:</label>
         <input type="number" name="accelerator"
             id="accelerator" min="0.0" max="100.0" step="1.0" value="0"/>
     </form>
-
+<br>
 <form id="brake_form">
         <label for="brake">Brake Pedal Percentage:</label>
         <input type="number" name="brake"
             id="brake" min="0.0" max="100.0" step="1.0" value="0"/>
     </form>
+<br>
+<form id="parking_brake_form">
+    <label for="parking_brake_check">Parking Brake Active:</label>
+    <input type="checkbox" name="parking_brake_check"
+        id="parking_brake_check" />
+</form>
 
 
      {% if session.updates_paused %}
@@ -38,6 +45,9 @@ Vehicle Controls:
        <dd><input type=submit value=Pause>
       </dl>
       </form>
+
+      {% endif %}
+
       <table>Vehicle Dynamics Data:
         <tr><td>Torque at Transmission: </td><td id="torque"></td><td>Nm</td></tr>
         <tr><td>Engine Speed: </td><td id="engine_speed"></td><td>RPM</td></tr>
@@ -48,7 +58,5 @@ Vehicle Controls:
         <tr><td>Latitude: </td><td id="latitude"></td><td></td></tr>
         <tr><td>Longitude: </td><td id="longitude"></td><td></td></tr>
       </table>
-
-      {% endif %}
 
 {% endblock %}

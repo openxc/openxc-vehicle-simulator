@@ -43,6 +43,16 @@ class StateManager(object):
         self.dynamics_model.accelerator = value
 
     @property
+    def parking_brake_status(self):
+        return self.dynamics_model.parking_brake_status
+
+    @parking_brake_status.setter
+    def parking_brake_status(self, value):
+        if value != self.dynamics_model.parking_brake_status:
+            self.connection.send_measurement("parking_brake_status", value)
+        self.dynamics_model.parking_brake_status = value
+
+    @property
     def brake_pedal_position(self):
         return self.dynamics_model.brake
 
@@ -121,8 +131,10 @@ class StateManager(object):
         
     def pause(self):
         self.stopped = True
+        self.dynamics_model.stopped = True
 
     def resume(self):
+        self.dynamics_model.stopped = False
         self.stopped = False
 
     def update_once(self):

@@ -42,24 +42,28 @@ class DynamicsModel(object):
         self.accelerator = 0.0
         self.brake = 0.0
         self.steering_wheel_angle = 0.0
+        self.parking_brake_status = False
+
+        self.stopped = False
 
     def physics_loop(self):
         while True:
-            time_til_calc = self.next_iterate - datetime.datetime.now()
-            if time_til_calc > self.zero_timedelta:
-                time.sleep(time_til_calc.microseconds / 1000000.0)
-                #Assuming less than a second.
-            self.next_iterate = self.next_iterate + self.delay_100Hz
-            
-            self.speed_data.iterate(self.accelerator)
-            self.torque_data.iterate(self.accelerator, self.vehicle_speed)
-            self.engine_speed_data.iterate(self.vehicle_speed)
-            self.fuel_consumed_data.iterate(self.accelerator)
-            self.odometer_data.iterate(self.vehicle_speed)
-            self.fuel_level_data.iterate(self.fuel_consumed)
-            self.heading_data.iterate(self.vehicle_speed, self.steering_wheel_angle)
-            self.lat_data.iterate(self.vehicle_speed, self.heading_data.get())
-            self.lon_data.iterate(self.vehicle_speed, self.heading_data.get(), self.lat)
+            if not self.stopped:
+                time_til_calc = self.next_iterate - datetime.datetime.now()
+                if time_til_calc > self.zero_timedelta:
+                    time.sleep(time_til_calc.microseconds / 1000000.0)
+                    #Assuming less than a second.
+                self.next_iterate = self.next_iterate + self.delay_100Hz
+
+                self.speed_data.iterate(self.accelerator, self.brake, self.parking_brake_status)
+                self.torque_data.iterate(self.accelerator, self.vehicle_speed)
+                self.engine_speed_data.iterate(self.vehicle_speed)
+                self.fuel_consumed_data.iterate(self.accelerator)
+                self.odometer_data.iterate(self.vehicle_speed)
+                self.fuel_level_data.iterate(self.fuel_consumed)
+                self.heading_data.iterate(self.vehicle_speed, self.steering_wheel_angle)
+                self.lat_data.iterate(self.vehicle_speed, self.heading_data.get())
+                self.lon_data.iterate(self.vehicle_speed, self.heading_data.get(), self.lat)
 
 # Properties  ---------------------
             
