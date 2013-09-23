@@ -22,6 +22,7 @@ class EnablerConnection():
                 # TODO:  Isolate dropped connection, recover from other things.
                 # For now, no recovery.  If ANYTHING goes wrong, drop the
                 # connection.
+                print("Exception while sending data: " + Exception)
                 self.connections.remove(connection)
                 print("Connection dropped.")
 
