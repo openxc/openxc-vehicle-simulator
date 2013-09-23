@@ -22,6 +22,10 @@ class StateManager(object):
         self.SLEEP_60HZ = 1.0 / (60 * 2)  # 1 second / 60Hz, / # of data points.
         self.start_send_loop(self.send_loop_60Hz, "Thread-60Hz")
 
+        self.headlamp = False
+        self.highbeams = False
+        self.wipers = False
+        
         print('State Manager initialized')
 
 # Properties -------------------
@@ -72,8 +76,40 @@ class StateManager(object):
     @parking_brake_status.setter
     def ignition_status(self, value):
         if value != self.dynamics_model.ignition_status:
+            print "Updating Ignition: ",
+            print value
             self.connection.send_measurement("ignition_status", value)
-        self.dynamics_model.ignition_status = value
+            self.dynamics_model.ignition_status = value
+
+    @property
+    def headlamp_status(self):
+        return self.headlamp
+
+    @parking_brake_status.setter
+    def headlamp_status(self, value):
+        if value != self.headlamp:
+            self.connection.send_measurement("headlamp_status", value)
+            self.headlamp = value
+
+    @property
+    def high_beam_status(self):
+        return self.highbeam
+
+    @parking_brake_status.setter
+    def high_beam_status(self, value):
+        if value != self.highbeam:
+            self.connection.send_measurement("high_beam_status", value)
+            self.headlamp = value
+
+    @property
+    def windshield_wiper_status(self):
+        return self.wipers
+
+    @windshield_wiper_status.setter
+    def windshield_wiper_status(self, value):
+        if value != self.wipers:
+            self.connection.send_measurement("windshield_wiper_status", value)
+            self.wipers = value
 
     @property
     def local_ip(self):
@@ -149,3 +185,6 @@ class StateManager(object):
 
     def update_once(self):
         self.connection.send_measurement("steering_wheel_angle", self.steering_wheel_angle)
+
+    def send_callback(self, data_name, value):
+        self.connection.send_measurement(data_name, value)

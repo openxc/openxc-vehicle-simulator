@@ -61,6 +61,24 @@ $(function() {
     });
 });
 
+$(function() {
+    $('#headlamp_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { headlamp_status: this.checked});
+    });
+});
+
+$(function() {
+    $('#high_beam_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { high_beam_status: this.checked});
+    });
+});
+
+$(function() {
+    $('#windshield_wiper_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { windshield_wiper_status: this.checked});
+    });
+});
+
     function StartTimer() {
         setInterval(function(){
             GetData();

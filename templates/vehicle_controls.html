@@ -34,6 +34,26 @@ Vehicle Controls:
         id="ignition_check" />
 </form>
 
+<br>
+<form id="headlamp_form">
+    <label for="headlamp_check">Headlamp Status:</label>
+    <input type="checkbox" name="headlamp_check"
+        id="headlamp_check" />
+</form>
+
+<br>
+<form id="high_beam_form">
+    <label for="high_beam_check">High Beam Status:</label>
+    <input type="checkbox" name="high_beam_check"
+        id="high_beam_check" />
+</form>
+
+<br>
+<form id="windshield_wiper_form">
+    <label for="windshield_wiper_check">Windshield Wiper Status:</label>
+    <input type="checkbox" name="windshield_wiper_check"
+        id="windshield_wiper_check" />
+</form>
 
      {% if session.updates_paused %}
       <form action="{{ url_for('single') }}" method=post class=add-entry>

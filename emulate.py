@@ -87,6 +87,27 @@ def set_data():
      except:
           pass
 
+     try:
+          headlamp_status = python_bool(request.form['headlamp_status'])
+          if headlamp_status is not None:
+               gState.headlamp_status = headlamp_status
+     except:
+          pass
+
+     try:
+          high_beam_status = python_bool(request.form['high_beam_status'])
+          if high_beam_status is not None:
+               gState.high_beam_status = high_beam_status
+     except:
+          pass
+
+     try:
+          windshield_wiper_status = python_bool(request.form['windshield_wiper_status'])
+          if windshield_wiper_status is not None:
+               gState.windshield_wiper_status = windshield_wiper_status
+     except:
+          pass
+
      return redirect(url_for('vehicle_data'))
 
 def python_bool(value):
