@@ -8,9 +8,6 @@ class EngineSpeedCalc(DataCalc):
         self.data = 0.0
 
     def iterate(self, vehicle_speed):  # Any necessary data should be passed in
-        engine_speed = self.data + 1
-        if engine_speed > 16382:
-            engine_speed = 0
-        self.data = engine_speed
+        self.data = 16382 * vehicle_speed / 200.0
         return
 
