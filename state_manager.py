@@ -76,8 +76,6 @@ class StateManager(object):
     @parking_brake_status.setter
     def ignition_status(self, value):
         if value != self.dynamics_model.ignition_status:
-            print "Updating Ignition: ",
-            print value
             self.connection.send_measurement("ignition_status", value)
             self.dynamics_model.ignition_status = value
 
@@ -188,3 +186,4 @@ class StateManager(object):
 
     def send_callback(self, data_name, value):
         self.connection.send_measurement(data_name, value)
+

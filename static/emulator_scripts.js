@@ -6,12 +6,12 @@ $(function() {
       value: 0,
       slide: function( event, ui ) {
           input.val(ui.value);
-          jQuery.post($SCRIPT_ROOT + '/_set_data', { angle: ui.value});
+          jQuery.post($SCRIPT_ROOT + '/_set_data', {name: "angle", value: ui.value});
       }
     });
     $( "#steering_wheel" ).change(function() {
         slider.slider( "value", this.value );
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { angle: this.value});
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "angle", value: this.value});
     });
   });
 
@@ -20,15 +20,15 @@ $(function() {
     var slider = $( "<div id='slider'></div>" ).insertAfter( input ).slider({
       min: 0,
       max: 100,
-      value: 0,
+        value: input.val(),
       slide: function( event, ui ) {
           input.val(ui.value);
-          jQuery.post($SCRIPT_ROOT + '/_set_data', { accelerator: ui.value});
+          jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "accelerator", value: ui.value});
       }
     });
     $( "#accelerator" ).change(function() {
         slider.slider( "value", this.value );
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { accelerator: this.value});
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "accelerator", value: this.value});
     });
   });
 
@@ -40,42 +40,42 @@ $(function() {
       value: 0,
       slide: function( event, ui ) {
           input.val(ui.value);
-          jQuery.post($SCRIPT_ROOT + '/_set_data', { brake: ui.value});
+          jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "brake", value: ui.value});
       }
     });
     $( "#brake" ).change(function() {
         slider.slider( "value", this.value );
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { brake: this.value});
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "brake", value: this.value});
     });
   });
 
 $(function() {
     $('#parking_brake_check').change(function(){
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { parking_brake_status: this.checked});
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "parking_brake_status", value: this.checked});
     });
 });
 
 $(function() {
     $('#ignition_check').change(function(){
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { ignition_status: this.checked});
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name:"ignition_status", value: this.checked});
     });
 });
 
 $(function() {
     $('#headlamp_check').change(function(){
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { headlamp_status: this.checked});
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "headlamp_status", value: this.checked});
     });
 });
 
 $(function() {
     $('#high_beam_check').change(function(){
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { high_beam_status: this.checked});
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "high_beam_status", value: this.checked});
     });
 });
 
 $(function() {
     $('#windshield_wiper_check').change(function(){
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { windshield_wiper_status: this.checked});
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "windshield_wiper_status", value: this.checked});
     });
 });
 

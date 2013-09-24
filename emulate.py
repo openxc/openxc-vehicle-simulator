@@ -51,62 +51,26 @@ def start():
 @app.route('/_set_data', methods=['POST'])
 def set_data():
      global gState
-     
-     try:
+
+     name = request.form['name']
+
+     if name == "angle":
           angle = float(request.form['angle'])
-          if angle is not None:
-               gState.steering_wheel_angle = angle
-     except:
-          pass
-
-     try:
-          accelerator = float(request.form['accelerator'])
-          if accelerator is not None:
-               gState.accelerator_pedal_position = accelerator
-     except:
-          pass
-
-     try:
-          brake = float(request.form['brake'])
-          if brake is not None:
-               gState.brake_pedal_position = brake
-     except:
-          pass
-
-     try:
-          parking_brake_status = python_bool(request.form['parking_brake_status'])
-          if parking_brake_status is not None:
-               gState.parking_brake_status = parking_brake_status
-     except:
-          pass
-
-     try:
-          ignition_status = python_bool(request.form['ignition_status'])
-          if ignition_status is not None:
-               gState.ignition_status = ignition_status
-     except:
-          pass
-
-     try:
-          headlamp_status = python_bool(request.form['headlamp_status'])
-          if headlamp_status is not None:
-               gState.headlamp_status = headlamp_status
-     except:
-          pass
-
-     try:
-          high_beam_status = python_bool(request.form['high_beam_status'])
-          if high_beam_status is not None:
-               gState.high_beam_status = high_beam_status
-     except:
-          pass
-
-     try:
-          windshield_wiper_status = python_bool(request.form['windshield_wiper_status'])
-          if windshield_wiper_status is not None:
-               gState.windshield_wiper_status = windshield_wiper_status
-     except:
-          pass
+          gState.steering_wheel_angle = float(request.form['value'])
+     elif name == "accelerator":
+          gState.accelerator_pedal_position = float(request.form['value'])
+     elif name == "brake":
+          gState.brake_pedal_position = float(request.form['value'])
+     elif name == "parking_brake_status":
+          gState.parking_brake_status = python_bool(request.form['value'])
+     elif name == "ignition_status":
+          gState.ignition_status = python_bool(request.form['value'])
+     elif name == "headlamp_status":
+          gState.headlamp_status = python_bool(request.form['value'])
+     elif name == "high_beam_status":
+          gState.high_beam_status = python_bool(request.form['value'])
+     elif name == "windshield_wiper_status":
+          gState.windshield_wiper_status = python_bool(request.form['value'])
 
      return redirect(url_for('vehicle_data'))
 

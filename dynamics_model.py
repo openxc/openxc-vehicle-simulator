@@ -58,7 +58,7 @@ class DynamicsModel(object):
 
                 self.speed_data.iterate(self.accelerator, self.brake, self.parking_brake_status,
                                         self.ignition_status)
-                self.torque_data.iterate(self.accelerator, self.vehicle_speed)
+                self.torque_data.iterate(self.accelerator, self.engine_speed)
                 self.engine_speed_data.iterate(self.vehicle_speed)
                 self.fuel_consumed_data.iterate(self.accelerator, self.ignition_status)
                 self.odometer_data.iterate(self.vehicle_speed)
