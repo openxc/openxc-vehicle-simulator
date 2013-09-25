@@ -56,6 +56,10 @@ $(function() {
 });
 
 $(function() {
+    $( '#ignition_radio' ).buttonset();
+});
+
+$(function() {
     $('#ignition_check').change(function(){
         jQuery.post($SCRIPT_ROOT + '/_set_data', { name:"ignition_status", value: this.checked});
     });
@@ -76,6 +80,30 @@ $(function() {
 $(function() {
     $('#windshield_wiper_check').change(function(){
         jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "windshield_wiper_status", value: this.checked});
+    });
+});
+
+$(function() {
+    $('#driver_door_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "door_status", value: "driver", event: this.checked});
+    });
+});
+
+$(function() {
+    $('#passenger_door_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "door_status", value: "passenger", event: this.checked});
+    });
+});
+
+$(function() {
+    $('#right_rear_door_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "door_status", value: "rear_right", event: this.checked});
+    });
+});
+
+$(function() {
+    $('#left_rear_door_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "door_status", value: "rear_left", event: this.checked});
     });
 });
 

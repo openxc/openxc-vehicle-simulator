@@ -46,3 +46,18 @@ class EnablerConnection():
             else:
                 value = "false"
         self.send("{\"name\":\"" + name + "\",\"value\":" + str(value) + "}\n")
+
+    def send_event(self, name, value, event):
+        if (type(value) == bool):
+            if value:
+                value = "true"
+            else:
+                value = "false"
+        if (type(event) == bool):
+            if event:
+                event = "true"
+            else:
+                event = "false"
+        send_string = "{\"name\":\"" + name + "\",\"value\":\"" + str(value) + "\",\"event\":" + str(event) + "}\n"
+        print send_string
+        self.send(send_string)

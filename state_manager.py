@@ -25,6 +25,7 @@ class StateManager(object):
         self.headlamp = False
         self.highbeams = False
         self.wipers = False
+        self.door_status = {'driver':False, 'passenger':False, 'left_rear':False, 'right_rear':False}
         
         print('State Manager initialized')
 
@@ -187,3 +188,6 @@ class StateManager(object):
     def send_callback(self, data_name, value):
         self.connection.send_measurement(data_name, value)
 
+    def update_door(self, door, value):
+        self.door_status[door] = value
+        self.connection.send_event("door_status", door, value)

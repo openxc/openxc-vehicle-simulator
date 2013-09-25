@@ -7,53 +7,64 @@ Vehicle Controls:
         <input type="number" name="steering_wheel"
             id="steering_wheel" min="-600.0" max="600.0" step="1.0" value="0"/>
     </form>
-<br>
 
-<form id="accelerator_form">
+<br><form id="accelerator_form">
         <label for="accelerator">Accelerator Pedal Percentage:</label>
         <input type="number" name="accelerator"
             id="accelerator" min="0.0" max="100.0" step="1.0"
         value="{{ accelerator }}"/>
     </form>
-<br>
-<form id="brake_form">
+
+<br><form id="brake_form">
         <label for="brake">Brake Pedal Percentage:</label>
         <input type="number" name="brake"
             id="brake" min="0.0" max="100.0" step="1.0" value="0"/>
     </form>
-<br>
-<form id="parking_brake_form">
+
+<br><form id="parking_brake_form">
     <label for="parking_brake_check">Parking Brake Active:</label>
     <input type="checkbox" name="parking_brake_check"
         id="parking_brake_check" />
 </form>
 
-<br>
-<form id="ignition_form">
-    <label for="ignition_check">Ignition:</label>
-    <input type="checkbox" name="ignition_check"
-        id="ignition_check" />
+<br><form id="ignition_form">
+    <label for="ignition_radio">Ignition Status:</label>
+    <div id="ignition_radio">
+        <input type="radio" name="ignition_radio" id="ig_off" ><label for="ig_off">Off</label>
+        <input type="radio" name="ignition_radio" id="ig_acc" ><label for="ig_acc">Accessory</label>
+        <input type="radio" name="ignition_radio" id="ig_run" checked'"checked"><label for="ig_run">Run</label>
+        <input type="radio" name="ignition_radio" id="ig_start" ><label for="ig_start">Start</label>
+    </div>
 </form>
 
-<br>
-<form id="headlamp_form">
+<br><form id="headlamp_form">
     <label for="headlamp_check">Headlamp Status:</label>
     <input type="checkbox" name="headlamp_check"
         id="headlamp_check" />
 </form>
 
-<br>
-<form id="high_beam_form">
+<br><form id="high_beam_form">
     <label for="high_beam_check">High Beam Status:</label>
     <input type="checkbox" name="high_beam_check"
         id="high_beam_check" />
 </form>
 
-<br>
-<form id="windshield_wiper_form">
+<br><form id="windshield_wiper_form">
     <label for="windshield_wiper_check">Windshield Wiper Status:</label>
     <input type="checkbox" name="windshield_wiper_check"
         id="windshield_wiper_check" />
+</form>
+    
+<br><form id="door_status">
+    Door Status:
+    <label for="driver_door_check">Driver:</label>
+    <input type="checkbox" name="driver_door_check" id="driver_door_check" />
+    <label for="passenger_door_check">Passenger:</label>
+    <input type="checkbox" name="passenger_door_check" id="passenger_door_check" />
+    <label for="right_rear_door_check">Right Rear:</label>
+    <input type="checkbox" name="right_rear_door_check" id="right_rear_door_check" />
+    <label for="left_rear_door_check">Left Rear:</label>
+    <input type="checkbox" name="left_rear_door_check" id="left_rear_door_check" />
 </form>
 
      {% if session.updates_paused %}
