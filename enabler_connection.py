@@ -45,7 +45,11 @@ class EnablerConnection():
                 value = "true"
             else:
                 value = "false"
-        self.send("{\"name\":\"" + name + "\",\"value\":" + str(value) + "}\n")
+        extra_quote = "\""
+        if(type(value) != unicode):
+            extra_quote = ""
+        send_string = "{\"name\":\"" + name + "\",\"value\":" + extra_quote + str(value) + extra_quote + "}\n"
+        self.send(send_string)
 
     def send_event(self, name, value, event):
         if (type(value) == bool):
