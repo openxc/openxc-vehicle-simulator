@@ -59,5 +59,4 @@ class EnablerConnection():
             else:
                 event = "false"
         send_string = "{\"name\":\"" + name + "\",\"value\":\"" + str(value) + "\",\"event\":" + str(event) + "}\n"
-        print send_string
         self.send(send_string)

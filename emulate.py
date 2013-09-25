@@ -64,7 +64,7 @@ def set_data():
      elif name == "parking_brake_status":
           gState.parking_brake_status = python_bool(request.form['value'])
      elif name == "ignition_status":
-          gState.ignition_status = python_bool(request.form['value'])
+          gState.ignition_status = request.form['value']
      elif name == "headlamp_status":
           gState.headlamp_status = python_bool(request.form['value'])
      elif name == "high_beam_status":

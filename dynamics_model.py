@@ -43,7 +43,8 @@ class DynamicsModel(object):
         self.brake = 0.0
         self.steering_wheel_angle = 0.0
         self.parking_brake_status = False
-        self.ignition_status = False
+        self.engine_running = True
+        self.ignition_data = 'run'
 
         self.stopped = False
 
@@ -57,10 +58,10 @@ class DynamicsModel(object):
                 self.next_iterate = self.next_iterate + self.delay_100Hz
 
                 self.speed_data.iterate(self.accelerator, self.brake, self.parking_brake_status,
-                                        self.ignition_status)
-                self.torque_data.iterate(self.accelerator, self.engine_speed)
+                                        self.engine_running)
+                self.torque_data.iterate(self.accelerator, self.engine_speed, self.engine_running)
                 self.engine_speed_data.iterate(self.vehicle_speed)
-                self.fuel_consumed_data.iterate(self.accelerator, self.ignition_status)
+                self.fuel_consumed_data.iterate(self.accelerator, self.engine_running)
                 self.odometer_data.iterate(self.vehicle_speed)
                 self.fuel_level_data.iterate(self.fuel_consumed)
                 self.heading_data.iterate(self.vehicle_speed, self.steering_wheel_angle)
@@ -118,3 +119,17 @@ class DynamicsModel(object):
                        fuel_level=self.fuel_level,
                        latitude=self.lat,
                        longitude=self.lon)
+
+    @property
+    def ignition_status(self):
+        return self.ignition_data
+    
+    @ignition_status.setter
+    def ignition_status(self, value):
+        self.ignition_data = value
+        if value == 'start':
+            self.engine_running = True
+        elif value == 'off':
+            self.engine_running = False
+        elif value == 'accessory':
+            self.engine_running = False

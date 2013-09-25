@@ -59,6 +59,30 @@ $(function() {
     $( '#ignition_radio' ).buttonset();
 });
 
+$(function(){
+    $( '#ig_off' ).change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "ignition_status", value: 'off'});
+    });
+});
+
+$(function(){
+    $( '#ig_acc' ).change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "ignition_status", value: 'accessory'});
+    });
+});
+
+$(function(){
+    $( '#ig_run' ).change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "ignition_status", value: 'run'});
+    });
+});
+
+$(function(){
+    $( '#ig_start' ).change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "ignition_status", value: 'start'});
+    });
+});
+
 $(function() {
     $('#ignition_check').change(function(){
         jQuery.post($SCRIPT_ROOT + '/_set_data', { name:"ignition_status", value: this.checked});

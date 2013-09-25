@@ -8,9 +8,12 @@ class TorqueCalc(DataCalc):
         self.data = 0.0
         self.engine_to_torque = 500.0 / 16382.0
 
-    def iterate(self, accelerator, engine_speed):  # Any necessary data should be passed in
+    def iterate(self, accelerator, engine_speed, engine_running):  # Any necessary data should be passed in
         drag = engine_speed * self.engine_to_torque
         power = accelerator * 15
-        self.data = power - drag
+        if engine_running:
+            self.data = power - drag
+        else:
+            self.data = -drag
         return
 
