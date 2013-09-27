@@ -6,13 +6,16 @@ class EnablerConnection():
         self.connections = []
 
         self.stopped = False
+        self.enabler_listening_port = 50001
 
         self.local_ip = socket.gethostbyname(socket.gethostname())
+        self.ip_list = socket.gethostbyname_ex(socket.gethostname())[2]
         #self.local_ip = '192.168.1.8'
 
-        t = threading.Thread(target=self.listen_loop, name="Thread-connections")
-        t.setDaemon(True)
-        t.start()
+        for ip in self.ip_list:
+            t = threading.Thread(target=self.listen_loop, name=ip, args=(ip,))
+            t.setDaemon(True)
+            t.start()
 
     def send(self, outString):
         for connection in self.connections:
@@ -26,17 +29,15 @@ class EnablerConnection():
                 self.connections.remove(connection)
                 print("Connection dropped.")
 
-    def listen_loop(self):
-        port = 50001
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.s.bind((str(self.local_ip), port))
-        self.s.listen(1)
-        print('For the UI, navigate a browser to ' + str(self.local_ip) + ':5000')
-        print('Set OpenXC Enabler network connections to ' + str(self.local_ip) + ', port ' + str(port))
+    def listen_loop(self, this_ip):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind((this_ip, self.enabler_listening_port))
+        s.listen(1)
+        print("Listening for OpenXC Enabler on " + this_ip + ":" + str(self.enabler_listening_port))
         while True:
-            conn, addr = self.s.accept()
-            print("New connection to " + str(addr))
+            conn, addr = s.accept()
+            print("New connection to " + this_ip + " from " + str(addr))
             self.connections.append(conn)
 
     def send_measurement(self, name, value):

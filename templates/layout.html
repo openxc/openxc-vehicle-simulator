@@ -20,10 +20,9 @@ filename='style.css') }}">
 <body>
     <div class=page>
         <h1>OpenXC Vehicle Emulator</h1>
-        {% if IP == '127.0.0.1' %}
             Connect the OpenXC Enabler to this machine's IP address, port 50001
-        {% else %}
-            Connect the OpenXC Enabler to {{ IP }}, port 50001
+        {% if IP != '127.0.0.1' %}
+            <br>Detected IP: {{ IP }}
         {% endif %}
         <div class=metanav></div>
         {% for message in get_flashed_messages() %}
