@@ -133,7 +133,7 @@ class StateManager(object):
                 time.sleep(0.5)
 
     def send_loop_1Hz(self):
-        self.connection.send_measurement("latitiude",
+        self.connection.send_measurement("latitude",
                         self.dynamics_model.lat)
         time.sleep(self.SLEEP_1HZ)
         self.connection.send_measurement("longitude",
