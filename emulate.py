@@ -55,7 +55,6 @@ def set_data():
      name = request.form['name']
 
      if name == "angle":
-          angle = float(request.form['angle'])
           gState.steering_wheel_angle = float(request.form['value'])
      elif name == "accelerator":
           gState.accelerator_pedal_position = float(request.form['value'])
