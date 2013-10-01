@@ -7,7 +7,7 @@ class StateManager(object):
     def __init__(self):
         self.stopped = False
         self.connection = enabler_connection.EnablerConnection()
-        self.dynamics_model = dynamics_model.DynamicsModel()
+        self.dynamics_model = dynamics_model.DynamicsModel(self.connection.send_measurement)
 
         self.SLEEP_1HZ = 1.0 / 2  # 1 second / # of data points.
         self.start_send_loop(self.send_loop_1Hz, "Thread-1Hz")
@@ -66,7 +66,6 @@ class StateManager(object):
         old_brake = self.dynamics_model.brake_pedal_status
         self.dynamics_model.brake = value
         if old_brake != self.dynamics_model.brake_pedal_status:
-            print "sending"
             self.connection.send_measurement("brake_pedal_status",
                         self.dynamics_model.brake_pedal_status)
 

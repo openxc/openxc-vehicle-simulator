@@ -1,5 +1,6 @@
 import socket
 import threading
+import json
 
 class EnablerConnection():
     def __init__(self):
@@ -41,16 +42,10 @@ class EnablerConnection():
             self.connections.append(conn)
 
     def send_measurement(self, name, value):
-        if (type(value) == bool):
-            if value:
-                value = "true"
-            else:
-                value = "false"
-        extra_quote = "\""
-        if(type(value) != unicode):
-            extra_quote = ""
-        send_string = "{\"name\":\"" + name + "\",\"value\":" + extra_quote + str(value) + extra_quote + "}\n"
-        self.send(send_string)
+        send_string = json.dumps({'name':name,'value':value})
+        self.send(send_string + "\n")
+        if name == 'vehicle_speed':
+            print(send_string + "\n")
 
     def send_event(self, name, value, event):
         if (type(value) == bool):

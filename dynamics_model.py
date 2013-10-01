@@ -5,6 +5,7 @@ from flask import jsonify
 import datetime
 
 from data import speed_calc
+from data import gear_calc
 from data import torque_calc
 from data import engine_speed_calc
 from data import fuel_consumed_calc
@@ -15,8 +16,8 @@ from data import lat_calc
 from data import lon_calc
 
 class DynamicsModel(object):
-    def __init__(self):
-        self._initialize_data()
+    def __init__(self, update_callback):
+        self._initialize_data(update_callback)
 
         t = threading.Thread(target=self.physics_loop, name="Thread-Physics")
         t.setDaemon(True)
@@ -24,8 +25,9 @@ class DynamicsModel(object):
 
         print("Dynamics Model initialized")
 
-    def _initialize_data(self):
+    def _initialize_data(self, update_callback):
         self.speed_data = speed_calc.SpeedCalc()
+        self.gear_data = gear_calc.GearCalc(update_callback)
         self.torque_data = torque_calc.TorqueCalc()
         self.engine_speed_data = engine_speed_calc.EngineSpeedCalc()
         self.fuel_consumed_data = fuel_consumed_calc.FuelConsumedCalc()
@@ -60,6 +62,7 @@ class DynamicsModel(object):
                 self.speed_data.iterate(self.accelerator, self.brake, self.parking_brake_status,
                                         self.engine_running)
                 self.torque_data.iterate(self.accelerator, self.engine_speed, self.engine_running)
+                self.gear_data.iterate(self.vehicle_speed, self.engine_running)
                 self.engine_speed_data.iterate(self.vehicle_speed)
                 self.fuel_consumed_data.iterate(self.accelerator, self.engine_running)
                 self.odometer_data.iterate(self.vehicle_speed)
@@ -112,6 +115,7 @@ class DynamicsModel(object):
     @property
     def data(self):
         return jsonify(vehicle_speed=self.vehicle_speed,
+                       transmission_gear_posiotion=self.gear_data.get(),
                        torque_at_transmission=self.torque,
                        engine_speed=self.engine_speed,
                        fuel_consumed_since_restart=self.fuel_consumed,
