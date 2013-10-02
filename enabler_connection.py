@@ -44,19 +44,7 @@ class EnablerConnection():
     def send_measurement(self, name, value):
         send_string = json.dumps({'name':name,'value':value})
         self.send(send_string + "\n")
-        if name == 'vehicle_speed':
-            print(send_string + "\n")
 
     def send_event(self, name, value, event):
-        if (type(value) == bool):
-            if value:
-                value = "true"
-            else:
-                value = "false"
-        if (type(event) == bool):
-            if event:
-                event = "true"
-            else:
-                event = "false"
-        send_string = "{\"name\":\"" + name + "\",\"value\":\"" + str(value) + "\",\"event\":" + str(event) + "}\n"
-        self.send(send_string)
+        send_string = json.dumps({'name':name,'value':value,'event':event})
+        self.send(send_string + "\n")
