@@ -73,7 +73,7 @@ GUI also displays the outgoing data to the user.  This is not intended to be any
 sort of video game, nor a simulation of the driving experience.  It is only 
 intended to simulate the data that might be generated on the CAN bus.  The user 
 interface uses [Flask](http://flask.pocoo.org/) and 
-[jQuery](http://jqueryui.com/) to provide interation with the Emulator.  
+[jQuery](http://jqueryui.com/) to provide interaction with the Emulator.  
 
 emulate.py
 

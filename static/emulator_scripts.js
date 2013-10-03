@@ -138,14 +138,14 @@ $(function() {
     }
 
     function ParseData(dataJSON) {
-        document.getElementById("torque").innerHTML = dataJSON.torque_at_transmission;
-        document.getElementById("engine_speed").innerHTML = dataJSON.engine_speed;
-        document.getElementById("vehicle_speed").innerHTML = dataJSON.vehicle_speed;
-        document.getElementById("fuel_consumed").innerHTML = dataJSON.fuel_consumed_since_restart;
-        document.getElementById("odometer").innerHTML = dataJSON.odometer;
-        document.getElementById("fuel_level").innerHTML = dataJSON.fuel_level;
-        document.getElementById("latitude").innerHTML = dataJSON.latitude;
-        document.getElementById("longitude").innerHTML = dataJSON.longitude;
+        document.getElementById("torque").innerHTML = (dataJSON.torque_at_transmission).toFixed(0);
+        document.getElementById("engine_speed").innerHTML = (dataJSON.engine_speed).toFixed(0);
+        document.getElementById("vehicle_speed").innerHTML = (dataJSON.vehicle_speed).toFixed(2);
+        document.getElementById("fuel_consumed").innerHTML = (dataJSON.fuel_consumed_since_restart).toFixed(3);
+        document.getElementById("odometer").innerHTML = (dataJSON.odometer).toFixed(3);
+        document.getElementById("fuel_level").innerHTML = (dataJSON.fuel_level).toFixed(2);
+        document.getElementById("latitude").innerHTML = (dataJSON.latitude).toFixed(6);
+        document.getElementById("longitude").innerHTML = (dataJSON.longitude).toFixed(6);
     }
 
     function GetData() {
