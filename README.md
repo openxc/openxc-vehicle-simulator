@@ -11,7 +11,7 @@ Android host device via TCP connection.  The vehicle dynamics model is simple.
 It is modular, allowing for different vehicles, but for the current version,
 accuracy is not be a priority. The point is not to create data from a specific
 model and year, but rather to create plausible data from a hypothetical car that
-can be used jfor debugging and demonstrations.
+can be used for debugging and demonstrations.
 
 The user interface is not a driving simulator, merely a list of controls.
 Controls include sliders for pedals and the steering wheel, various radio
@@ -63,7 +63,7 @@ The GUI allows real time user input.  (pedals, gear, steering wheel, etc.)  The
 GUI also displays the outgoing data to the user.  This is not intended to be any
 sort of video game, nor a simulation of the driving experience.  It is only
 intended to simulate the data that might be generated on the CAN bus.  The user
-interface uses Flask and jQuery to provide interation with the Emulator.
+interface uses Flask and jQuery to provide interaction with the Emulator.
 
 emulate.py
 
