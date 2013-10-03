@@ -133,3 +133,8 @@ data/data_calc.py
 This is the base class for each of the data types in the Dynamics Model.  Each
 data type in that directory overloads the iterate() function with the proper way
 to reach the next snapshot of that data.
+
+## License
+
+Copyright (c) 2011-2013 Ford Motor Company
+Licensed under the BSD license.
