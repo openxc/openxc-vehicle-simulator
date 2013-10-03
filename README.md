@@ -68,6 +68,7 @@ makes use of the
 [OpenXC Web API](https://github.com/openxc/web-logging-example#api).
 
 ### User Interface
+![Emulator screen shot](docs/emulator-screen-shot.png)
 The GUI allows real time user input.  (pedals, gear, steering wheel, etc.)  The 
 GUI also displays the outgoing data to the user.  This is not intended to be any 
 sort of video game, nor a simulation of the driving experience.  It is only 
