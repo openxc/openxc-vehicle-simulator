@@ -43,7 +43,7 @@ device.
 Once you've cloned the repository, install the Python Flask dependencies with
 `pip`:
 
-      $ pip install pip-requirements.txt
+      $ pip install -r pip-requirements.txt
 
 
 ## Running the Emulator
