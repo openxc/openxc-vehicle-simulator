@@ -45,6 +45,12 @@ Once you've cloned the repository, install the Python Flask dependencies with
 
       $ pip install -r pip-requirements.txt
 
+If that fails due to lack of permissions, there are a few options.  One is to 
+use [VirtualEnv](https://pypi.python.org/pypi/virtualenv) as described in the 
+[Flask installation documentation.](http://flask.pocoo.org/docs/installation/)
+Another option is to run the install with sudo:
+
+      $ sudo pip install -r pip-requirements.txt
 
 ## Running the Emulator
 To run the app:
