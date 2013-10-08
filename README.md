@@ -67,6 +67,11 @@ the port to 50001. You may need to disable and re-enable "Use a network device"
 after entering the correct information. The terminal running emulate.py should
 indicate that it received a new connection.
 
+If the Enabler fails to connect, you may need to use a different IP address.  
+The python address detection isn't perfect, and multiple IPs on a computer can
+confuse it.  When emulate.py is started, it displays a list of IPs on which it
+listens for connections from the OpenXC Enabler.  
+
 ## Under the Hood
 The Emulator is comprised of three main components:  The State Manager, The User 
 Interface, and the Dynamics Model.  The Network Connection to the OpenXC Enabler 
