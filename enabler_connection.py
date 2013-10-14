@@ -10,13 +10,9 @@ class EnablerConnection():
         self.enabler_listening_port = 50001
 
         self.local_ip = socket.gethostbyname(socket.gethostname())
-        self.ip_list = socket.gethostbyname_ex(socket.gethostname())[2]
-        #self.local_ip = '192.168.1.8'
-
-        for ip in self.ip_list:
-            t = threading.Thread(target=self.listen_loop, name=ip, args=(ip,))
-            t.setDaemon(True)
-            t.start()
+        t = threading.Thread(target=self.listen_loop, name='0.0.0.0', args=('0.0.0.0',))
+        t.setDaemon(True)
+        t.start()
 
     def send(self, outString):
         for connection in self.connections:
