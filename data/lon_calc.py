@@ -31,7 +31,5 @@ class LonCalc(DataCalc):
             new_lon = new_lon - 360
         while new_lon < -180:
             new_lon = new_lon + 360
-        
-        self.data = new_lon
-        return
 
+        self.data = new_lon

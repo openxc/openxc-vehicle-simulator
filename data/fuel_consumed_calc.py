@@ -19,6 +19,3 @@ class FuelConsumedCalc(DataCalc):
 
         if ignition_status:
             self.data = self.data + self.idle_fuel + (self.max_fuel * (accelerator_percent / 100) * time_step)
-
-        return
-

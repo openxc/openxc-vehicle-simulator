@@ -10,6 +10,3 @@ class FuelLevelCalc(DataCalc):
 
     def iterate(self, fuel_consumed):  # Any necessary data should be passed in
         self.data = 100.0 * (self.tank_size - fuel_consumed) / self.tank_size
-
-        return
-

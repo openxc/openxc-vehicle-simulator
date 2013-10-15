@@ -17,6 +17,3 @@ class OdometerCalc(DataCalc):
         self.last_calc = current_time
 
         self.data = self.data + (vehicle_speed * time_step / self.KPH_to_KPS)
-
-        return
-
