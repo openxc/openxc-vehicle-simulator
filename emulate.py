@@ -4,7 +4,7 @@
 
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, \
-        render_template, flash, jsonify
+        render_template, flash, jsonify, make_response
 from contextlib import closing
 import state_manager
 
@@ -17,6 +17,11 @@ PASSWORD = 'default'
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
+
+def _make_status_response(status):
+    response = make_response()
+    response.status_code = status
+    return response
 
 @app.route('/')
 def vehicle_data():
@@ -75,7 +80,7 @@ def set_data():
      else:
           print("Unsupported data received from UI: " + name)
 
-     return redirect(url_for('vehicle_data'))
+     return _make_status_response(201)
 
 def python_bool(value):
      if value == "true":
