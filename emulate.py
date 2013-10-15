@@ -2,10 +2,8 @@
 
 # all the imports
 
-import sqlite3
-from flask import Flask, request, session, g, redirect, url_for, \
-        render_template, flash, jsonify
-from contextlib import closing
+from flask import Flask, request, session, redirect, url_for, \
+        render_template
 import state_manager
 
 # configuration
