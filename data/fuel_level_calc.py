@@ -12,4 +12,3 @@ class FuelLevelCalc(DataCalc):
         self.data = 100.0 * (self.tank_size - fuel_consumed) / self.tank_size
 
         return
-
