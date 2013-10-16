@@ -20,5 +20,3 @@ class GearCalc(DataCalc):
             self.gear = self.gear + 1
             self.data = self.gears[self.gear]
             self.update('transmission_gear_position', self.data)
-        return
-

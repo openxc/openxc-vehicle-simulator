@@ -15,5 +15,3 @@ class TorqueCalc(DataCalc):
             self.data = power - drag
         else:
             self.data = -drag
-        return
-
