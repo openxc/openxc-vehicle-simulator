@@ -12,5 +12,5 @@ class DataCalc(object):
         self.data = new_value
 
     def iterate(self, data):  # Any necessary data should be passed in
-        return
+        pass
 

@@ -35,5 +35,3 @@ class HeadingCalc(DataCalc):
             temp_heading = temp_heading + (2*math.pi)
 
         self.data = temp_heading
-        return
-

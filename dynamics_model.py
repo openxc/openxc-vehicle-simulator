@@ -84,13 +84,10 @@ class DynamicsModel(object):
     @property
     def vehicle_speed(self):
         return math.fabs(self.speed_data.get())
-        
+
     @property
     def brake_pedal_status(self):
-        if self.brake > 0.0:
-            return True
-        else:
-            return False
+        return self.brake > 0.0
 
     @property
     def fuel_consumed(self):

@@ -29,5 +29,3 @@ class LatCalc(DataCalc):
 
         self.data = self.data + delta_lat
         #Todo:  check for the poles
-        return
-
