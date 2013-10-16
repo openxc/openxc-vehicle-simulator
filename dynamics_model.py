@@ -59,20 +59,25 @@ class DynamicsModel(object):
                     #Assuming less than a second.
                 self.next_iterate = self.next_iterate + self.delay_100Hz
 
-                self.speed_data.iterate(self.accelerator, self.brake, self.parking_brake_status,
-                                        self.engine_running)
-                self.torque_data.iterate(self.accelerator, self.engine_speed, self.engine_running)
+                self.speed_data.iterate(self.accelerator, self.brake,
+                        self.parking_brake_status, self.engine_running)
+                self.torque_data.iterate(self.accelerator, self.engine_speed,
+                        self.engine_running)
                 self.gear_data.iterate(self.vehicle_speed, self.engine_running)
                 self.engine_speed_data.iterate(self.vehicle_speed)
-                self.fuel_consumed_data.iterate(self.accelerator, self.engine_running)
+                self.fuel_consumed_data.iterate(self.accelerator,
+                        self.engine_running)
                 self.odometer_data.iterate(self.vehicle_speed)
                 self.fuel_level_data.iterate(self.fuel_consumed)
-                self.heading_data.iterate(self.vehicle_speed, self.steering_wheel_angle)
-                self.lat_data.iterate(self.vehicle_speed, self.heading_data.get())
-                self.lon_data.iterate(self.vehicle_speed, self.heading_data.get(), self.lat)
+                self.heading_data.iterate(self.vehicle_speed,
+                        self.steering_wheel_angle)
+                self.lat_data.iterate(self.vehicle_speed,
+                        self.heading_data.get())
+                self.lon_data.iterate(self.vehicle_speed,
+                        self.heading_data.get(), self.lat)
 
 # Properties  ---------------------
-            
+
     @property
     def torque(self):
         return self.torque_data.get()
@@ -124,7 +129,7 @@ class DynamicsModel(object):
     @property
     def ignition_status(self):
         return self.ignition_data
-    
+
     @ignition_status.setter
     def ignition_status(self, value):
         self.ignition_data = value

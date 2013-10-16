@@ -69,7 +69,8 @@ def set_data():
      elif name == "windshield_wiper_status":
           gState.windshield_wiper_status = python_bool(request.form['value'])
      elif name == "door_status":
-          gState.update_door(request.form['value'], python_bool(request.form['event']))
+          gState.update_door(request.form['value'], python_bool(
+               request.form['event']))
      else:
           print("Unsupported data received from UI: " + name)
 

@@ -13,11 +13,13 @@ class LatCalc(DataCalc):
         self.earth_circumference_km = 40075.0
         self.km_per_deg = self.earth_circumference_km / 360.0
 
-    def iterate(self, vehicle_speed, heading):  # Any necessary data should be passed in
+    # Any necessary data should be passed in
+    def iterate(self, vehicle_speed, heading):
         current_time = datetime.now()
         time_delta = current_time - self.last_calc
         self.last_calc = current_time
-        time_step = time_delta.seconds + (float(time_delta.microseconds) / 1000000)
+        time_step = time_delta.seconds + (
+                float(time_delta.microseconds) / 1000000)
 
         distance = time_step * (vehicle_speed / 3600)
         N_S_dist = distance * math.cos(heading)

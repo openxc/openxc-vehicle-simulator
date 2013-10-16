@@ -11,11 +11,14 @@ class FuelConsumedCalc(DataCalc):
         self.max_fuel = 0.0015 #In liters per second at full throttle.
         self.idle_fuel = 0.000015
 
-    def iterate(self, accelerator_percent, ignition_status):  # Any necessary data should be passed in
+    # Any necessary data should be passed in
+    def iterate(self, accelerator_percent, ignition_status):
         current_time = datetime.now()
         time_delta = current_time - self.last_calc
-        time_step = time_delta.seconds + (float(time_delta.microseconds) / 1000000)
+        time_step = time_delta.seconds + (
+                float(time_delta.microseconds) / 1000000)
         self.last_calc = current_time
 
         if ignition_status:
-            self.data = self.data + self.idle_fuel + (self.max_fuel * (accelerator_percent / 100) * time_step)
+            self.data = self.data + self.idle_fuel + (self.max_fuel * (
+                accelerator_percent / 100) * time_step)
