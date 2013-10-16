@@ -7,7 +7,8 @@ class StateManager(object):
     def __init__(self):
         self.stopped = False
         self.connection = enabler_connection.EnablerConnection()
-        self.dynamics_model = dynamics_model.DynamicsModel(self.connection.send_measurement)
+        self.dynamics_model = dynamics_model.DynamicsModel(
+                self.connection.send_measurement)
 
         self.start_send_loop(self.send_loop_1Hz, "Thread-1Hz")
         self.start_send_loop(self.send_loop_4Hz, "Thread-4Hz")
@@ -19,8 +20,9 @@ class StateManager(object):
         self.headlamp = False
         self.highbeams = False
         self.wipers = False
-        self.door_status = {'driver':False, 'passenger':False, 'left_rear':False, 'right_rear':False}
-        
+        self.door_status = {'driver':False, 'passenger':False,
+                'left_rear':False, 'right_rear':False}
+
         print('State Manager initialized')
 
 # Properties -------------------
@@ -114,7 +116,8 @@ class StateManager(object):
 # Sending Data ------------------
 
     def start_send_loop(self, function, thread_name):
-        t = threading.Thread(target=self.send_loop, args=[function], name=thread_name)
+        t = threading.Thread(target=self.send_loop, args=[function],
+                name=thread_name)
         t.setDaemon(True)
         t.start()
 
@@ -162,7 +165,7 @@ class StateManager(object):
         self.connection.send_measurement("torque_at_transmission",
                         self.dynamics_model.torque)
         time.sleep(1.0/60)
-        
+
     def pause(self):
         self.stopped = True
         self.dynamics_model.stopped = True
@@ -172,7 +175,8 @@ class StateManager(object):
         self.stopped = False
 
     def update_once(self):
-        self.connection.send_measurement("steering_wheel_angle", self.steering_wheel_angle)
+        self.connection.send_measurement("steering_wheel_angle",
+                self.steering_wheel_angle)
 
     def send_callback(self, data_name, value):
         self.connection.send_measurement(data_name, value)
