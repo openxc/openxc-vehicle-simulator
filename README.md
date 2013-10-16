@@ -1,27 +1,27 @@
 # openxc-vehicle-simulator
 
 ## Overview
-The OpenXC Vehicle Emulator is a web application intended for developers to run 
-on local machines to generate a simulated OpenXC vehicle data trace in real 
+The OpenXC Vehicle Emulator is a web application intended for developers to run
+on local machines to generate a simulated OpenXC vehicle data trace in real
 time, to be used for testing Android applications.
 
-This is intended to compliment the Enabler's ability to play back a recorded 
-trace file.  The Emulator does not attempt to provide a high precision depiction 
-of a specific vehicle.  If an app requires a high degree of accuracy, debuging 
-should be done with a trace.  The Emulator provides real-time manipulation of 
-the data.  This allows the developer to create and change desired conditions in 
+This is intended to compliment the Enabler's ability to play back a recorded
+trace file.  The Emulator does not attempt to provide a high precision depiction
+of a specific vehicle.  If an app requires a high degree of accuracy, debuging
+should be done with a trace.  The Emulator provides real-time manipulation of
+the data.  This allows the developer to create and change desired conditions in
 real time.
 
-The OpenXC Emulator creates vehicle data in the OpenXC format, emulating data 
-that comes from the OpenXC Vehicle Interface.  It emulates all of the signals in 
-the 
-[official OpenXC signal list](http://openxcplatform.com/vehicle-interface/output-format.html), 
-at the listed frequencies.  The emulator also takes user input for the vehicle 
-controls.  (Pedals, steering wheel, etc.)  The generated data is displayed for 
-the user and sent to the Android host device via TCP connection.  The vehicle 
-dynamics model is simple.  It is modular, allowing for different vehicles, but 
-for the current version, accuracy is not be a priority. The point is not to 
-create data from a specific model and year, but rather to create plausible data 
+The OpenXC Emulator creates vehicle data in the OpenXC format, emulating data
+that comes from the OpenXC Vehicle Interface.  It emulates all of the signals in
+the
+[official OpenXC signal list](http://openxcplatform.com/vehicle-interface/output-format.html),
+at the listed frequencies.  The emulator also takes user input for the vehicle
+controls.  (Pedals, steering wheel, etc.)  The generated data is displayed for
+the user and sent to the Android host device via TCP connection.  The vehicle
+dynamics model is simple.  It is modular, allowing for different vehicles, but
+for the current version, accuracy is not be a priority. The point is not to
+create data from a specific model and year, but rather to create plausible data
 from a hypothetical car that can be used for debugging and demonstrations.
 
 The user interface is not a driving simulator, merely a list of controls.
@@ -45,8 +45,8 @@ Once you've cloned the repository, install the Python Flask dependencies with
 
       $ pip install -r pip-requirements.txt
 
-If that fails due to lack of permissions, there are a few options.  One is to 
-use [VirtualEnv](https://pypi.python.org/pypi/virtualenv) as described in the 
+If that fails due to lack of permissions, there are a few options.  One is to
+use [VirtualEnv](https://pypi.python.org/pypi/virtualenv) as described in the
 [Flask installation documentation.](http://flask.pocoo.org/docs/installation/)
 Another option is to run the install with sudo:
 
@@ -67,25 +67,25 @@ the port to 50001. You may need to disable and re-enable "Use a network device"
 after entering the correct information. The terminal running emulate.py should
 indicate that it received a new connection.
 
-If the Enabler fails to connect, you may need to use a different IP address.  
+If the Enabler fails to connect, you may need to use a different IP address.
 The python address detection isn't perfect, and multiple IPs on a computer can
 confuse it.  When emulate.py is started, it displays a list of IPs on which it
-listens for connections from the OpenXC Enabler.  
+listens for connections from the OpenXC Enabler.
 
 ## Under the Hood
-The Emulator is comprised of three main components:  The State Manager, The User 
-Interface, and the Dynamics Model.  The Network Connection to the OpenXC Enabler 
-makes use of the 
+The Emulator is comprised of three main components:  The State Manager, The User
+Interface, and the Dynamics Model.  The Network Connection to the OpenXC Enabler
+makes use of the
 [OpenXC Web API](https://github.com/openxc/web-logging-example#api).
 
 ### User Interface
 ![Emulator screen shot](docs/emulator-screen-shot.png)
-The GUI allows real time user input.  (pedals, gear, steering wheel, etc.)  The 
-GUI also displays the outgoing data to the user.  This is not intended to be any 
-sort of video game, nor a simulation of the driving experience.  It is only 
-intended to simulate the data that might be generated on the CAN bus.  The user 
-interface uses [Flask](http://flask.pocoo.org/) and 
-[jQuery](http://jqueryui.com/) to provide interaction with the Emulator.  
+The GUI allows real time user input.  (pedals, gear, steering wheel, etc.)  The
+GUI also displays the outgoing data to the user.  This is not intended to be any
+sort of video game, nor a simulation of the driving experience.  It is only
+intended to simulate the data that might be generated on the CAN bus.  The user
+interface uses [Flask](http://flask.pocoo.org/) and
+[jQuery](http://jqueryui.com/) to provide interaction with the Emulator.
 
 emulate.py
 
@@ -145,8 +145,15 @@ This is the base class for each of the data types in the Dynamics Model.  Each
 data type in that directory overloads the iterate() function with the proper way
 to reach the next snapshot of that data.
 
+## Contributing
+
+Please see our [Contribution
+Documents](https://github.com/openxc/openxc-vehicle-simulator/blob/master/CONTRIBUTING.mkd)
+and the [list of all
+contributors](https://github.com/openxc/openxc-vehicle-simulator/blob/master/CONTRIBUTORS)
+
 ## License
 
-Copyright (c) 2011-2013 Ford Motor Company
+Copyright (c) 2013 Ford Motor Company
 
 Licensed under the BSD license.
