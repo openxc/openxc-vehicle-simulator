@@ -10,6 +10,7 @@ class FuelConsumedCalc(DataCalc):
         self.last_calc = datetime.now()
         self.max_fuel = 0.0015 #In liters per second at full throttle.
         self.idle_fuel = 0.000015
+        self.name = 'fuel_consumed_since_restart'
 
     # Any necessary data should be passed in
     def iterate(self, accelerator_percent, ignition_status):

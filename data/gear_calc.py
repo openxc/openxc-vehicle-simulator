@@ -12,6 +12,7 @@ class GearCalc(DataCalc):
         self.data = self.gears[self.gear]
         self.speeds = [ [0, 0 ], [0, 25], [20, 50], [45, 75], [70, 100],
                 [95, 125], [120, 500] ]
+        self.name = 'transmission_gear_position'
 
     # Any necessary data should be passed in
     def iterate(self, vehicle_speed, engine_running):

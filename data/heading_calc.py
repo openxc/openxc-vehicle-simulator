@@ -9,6 +9,7 @@ class HeadingCalc(DataCalc):
     def initialize_data(self):
         self.data = 0.0
         self.last_calc = datetime.now()
+        self.name = 'heading'
 
     def iterate(self, vehicle_speed, steering_wheel_angle):
         # 600 degree steering == 45 degree wheels.

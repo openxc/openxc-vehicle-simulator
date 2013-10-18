@@ -9,6 +9,7 @@ class SpeedCalc(DataCalc):
     def initialize_data(self):
         self.data = 0.0
         self.last_calc = datetime.now()
+        self.name = 'vehicle_speed'
 
     def iterate(self, accelerator_percent, brake, parking_brake_status,
             ignition_status):

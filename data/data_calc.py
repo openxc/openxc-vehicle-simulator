@@ -4,6 +4,7 @@ class DataCalc(object):
 
     def initialize_data(self):
         self.data = 0
+        self.name = 'data'
 
     def get(self):
         return self.data

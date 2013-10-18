@@ -12,6 +12,7 @@ class LatCalc(DataCalc):
         #self.earth_radius_km = 6378.1
         self.earth_circumference_km = 40075.0
         self.km_per_deg = self.earth_circumference_km / 360.0
+        self.name = 'latitude'
 
     # Any necessary data should be passed in
     def iterate(self, vehicle_speed, heading):

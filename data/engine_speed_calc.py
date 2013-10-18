@@ -6,6 +6,7 @@ class EngineSpeedCalc(DataCalc):
 
     def initialize_data(self):
         self.data = 0.0
+        self.name = 'engine_speed'
 
     def iterate(self, vehicle_speed):  # Any necessary data should be passed in
         self.data = 16382 * vehicle_speed / 200.0
