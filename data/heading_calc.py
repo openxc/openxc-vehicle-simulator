@@ -11,7 +11,10 @@ class HeadingCalc(DataCalc):
         self.last_calc = datetime.now()
         self.name = 'heading'
 
-    def iterate(self, vehicle_speed, steering_wheel_angle):
+    def iterate(self, snapshot):
+        vehicle_speed = snapshot['vehicle_speed']
+        steering_wheel_angle = snapshot['steering_wheel_angle']
+        
         # 600 degree steering == 45 degree wheels.
         wheel_angle = steering_wheel_angle / 13.33
         wheel_angle_rad = math.radians(wheel_angle)

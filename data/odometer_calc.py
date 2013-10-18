@@ -11,7 +11,9 @@ class OdometerCalc(DataCalc):
         self.KPH_to_KPS = 60 * 60
         self.name = 'odometer'
 
-    def iterate(self, vehicle_speed):  # Any necessary data should be passed in
+    def iterate(self, snapshot):
+        vehicle_speed = snapshot['vehicle_speed']  # Any necessary data should be passed in
+
         current_time = datetime.now()
         time_delta = current_time - self.last_calc
         time_step = time_delta.seconds + (

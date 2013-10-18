@@ -15,7 +15,10 @@ class LatCalc(DataCalc):
         self.name = 'latitude'
 
     # Any necessary data should be passed in
-    def iterate(self, vehicle_speed, heading):
+    def iterate(self, snapshot):
+        vehicle_speed = snapshot['vehicle_speed']
+        heading = snapshot['heading']
+        
         current_time = datetime.now()
         time_delta = current_time - self.last_calc
         self.last_calc = current_time

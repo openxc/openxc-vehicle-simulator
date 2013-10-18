@@ -3,6 +3,7 @@ import time
 import math
 from flask import jsonify
 import datetime
+import json
 
 from data import speed_calc
 from data import gear_calc
@@ -26,16 +27,21 @@ class DynamicsModel(object):
         print("Dynamics Model initialized")
 
     def _initialize_data(self, update_callback):
-        self.speed_data = speed_calc.SpeedCalc()
-        self.gear_data = gear_calc.GearCalc(update_callback)
-        self.torque_data = torque_calc.TorqueCalc()
-        self.engine_speed_data = engine_speed_calc.EngineSpeedCalc()
-        self.fuel_consumed_data = fuel_consumed_calc.FuelConsumedCalc()
-        self.odometer_data = odometer_calc.OdometerCalc()
-        self.fuel_level_data = fuel_level_calc.FuelLevelCalc()
-        self.heading_data = heading_calc.HeadingCalc()
-        self.lat_data = lat_calc.LatCalc()
-        self.lon_data = lon_calc.LonCalc()
+        self.calculations = []
+        self.calculations.append(speed_calc.SpeedCalc())
+        self.calculations.append(gear_calc.GearCalc(update_callback))
+        self.calculations.append(torque_calc.TorqueCalc())
+        self.calculations.append(engine_speed_calc.EngineSpeedCalc())
+        self.calculations.append(fuel_consumed_calc.FuelConsumedCalc())
+        self.calculations.append(odometer_calc.OdometerCalc())
+        self.calculations.append(fuel_level_calc.FuelLevelCalc())
+        self.calculations.append(heading_calc.HeadingCalc())
+        self.calculations.append(lat_calc.LatCalc())
+        self.calculations.append(lon_calc.LonCalc())
+
+        self.snapshot = {}
+        for data in self.calculations:
+            self.snapshot[data.name] = data.get()
 
         self.delay_100Hz = datetime.timedelta(0,0,10000)
         self.next_iterate = datetime.datetime.now() + self.delay_100Hz
@@ -48,6 +54,8 @@ class DynamicsModel(object):
         self.engine_running = True
         self.ignition_data = 'run'
 
+        print self.snapshot
+
         self.stopped = False
 
     def physics_loop(self):
@@ -59,36 +67,33 @@ class DynamicsModel(object):
                     #Assuming less than a second.
                 self.next_iterate = self.next_iterate + self.delay_100Hz
 
-                self.speed_data.iterate(self.accelerator, self.brake,
-                        self.parking_brake_status, self.engine_running)
-                self.torque_data.iterate(self.accelerator, self.engine_speed,
-                        self.engine_running)
-                self.gear_data.iterate(self.vehicle_speed, self.engine_running)
-                self.engine_speed_data.iterate(self.vehicle_speed)
-                self.fuel_consumed_data.iterate(self.accelerator,
-                        self.engine_running)
-                self.odometer_data.iterate(self.vehicle_speed)
-                self.fuel_level_data.iterate(self.fuel_consumed)
-                self.heading_data.iterate(self.vehicle_speed,
-                        self.steering_wheel_angle)
-                self.lat_data.iterate(self.vehicle_speed,
-                        self.heading_data.get())
-                self.lon_data.iterate(self.vehicle_speed,
-                        self.heading_data.get(), self.lat)
+                # Store the latest user input...
+                self.snapshot['accelerator'] = self.accelerator
+                self.snapshot['brake'] = self.brake
+                self.snapshot['steering_wheel_angle'] = self.steering_wheel_angle
+                self.snapshot['parking_brake_status'] = self.parking_brake_status
+                self.snapshot['engine_running'] = self.engine_running
+                self.snapshot['ignition_data'] = self.ignition_data
 
+                new_snapshot = {}
+                for data in self.calculations:
+                    data.iterate(self.snapshot)
+                    new_snapshot[data.name] = data.get()
+
+                self.snapshot = new_snapshot
 # Properties  ---------------------
 
     @property
     def torque(self):
-        return self.torque_data.get()
+        return self.snapshot['torque_at_transmission']
 
     @property
     def engine_speed(self):
-        return self.engine_speed_data.get()
+        return self.snapshot['engine_speed']
 
     @property
     def vehicle_speed(self):
-        return math.fabs(self.speed_data.get())
+        return math.fabs(self.snapshot['vehicle_speed'])
 
     @property
     def brake_pedal_status(self):
@@ -96,35 +101,36 @@ class DynamicsModel(object):
 
     @property
     def fuel_consumed(self):
-        return self.fuel_consumed_data.get()
+        return self.snapshot['fuel_consumed_since_restart']
 
     @property
     def odometer(self):
-        return self.odometer_data.get()
+        return self.snapshot['odometer']
 
     @property
     def fuel_level(self):
-        return self.fuel_level_data.get()
+        return self.snapshot['fuel_level']
 
     @property
     def lat(self):
-        return self.lat_data.get()
+        return self.snapshot['latitude']
 
     @property
     def lon(self):
-        return self.lon_data.get()
+        return self.snapshot['longitude']
 
     @property
     def data(self):
-        return jsonify(vehicle_speed=self.vehicle_speed,
-                       transmission_gear_posiotion=self.gear_data.get(),
-                       torque_at_transmission=self.torque,
-                       engine_speed=self.engine_speed,
-                       fuel_consumed_since_restart=self.fuel_consumed,
-                       odometer=self.odometer,
-                       fuel_level=self.fuel_level,
-                       latitude=self.lat,
-                       longitude=self.lon)
+        return json.dumps(self.snapshot)
+#        return jsonify(vehicle_speed=self.vehicle_speed,
+#                       transmission_gear_posiotion=self.gear_data.get(),
+#                       torque_at_transmission=self.torque,
+#                       engine_speed=self.engine_speed,
+#                       fuel_consumed_since_restart=self.fuel_consumed,
+#                       odometer=self.odometer,
+#                       fuel_level=self.fuel_level,
+#                       latitude=self.lat,
+#                       longitude=self.lon)
 
     @property
     def ignition_status(self):

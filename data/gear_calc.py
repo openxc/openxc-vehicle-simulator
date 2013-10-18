@@ -15,7 +15,10 @@ class GearCalc(DataCalc):
         self.name = 'transmission_gear_position'
 
     # Any necessary data should be passed in
-    def iterate(self, vehicle_speed, engine_running):
+    def iterate(self, snapshot):
+        vehicle_speed = snapshot['vehicle_speed']
+        engine_running = snapshot['engine_running']
+        
         if vehicle_speed < self.speeds[self.gear][0]:
             self.gear = self.gear - 1
             self.data = self.gears[self.gear]

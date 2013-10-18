@@ -8,5 +8,7 @@ class EngineSpeedCalc(DataCalc):
         self.data = 0.0
         self.name = 'engine_speed'
 
-    def iterate(self, vehicle_speed):  # Any necessary data should be passed in
+    def iterate(self, snapshot):
+        vehicle_speed = snapshot['vehicle_speed']
+        
         self.data = 16382 * vehicle_speed / 200.0

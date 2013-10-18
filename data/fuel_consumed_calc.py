@@ -13,7 +13,10 @@ class FuelConsumedCalc(DataCalc):
         self.name = 'fuel_consumed_since_restart'
 
     # Any necessary data should be passed in
-    def iterate(self, accelerator_percent, ignition_status):
+    def iterate(self, snapshot):
+        accelerator_percent = snapshot['accelerator']
+        ignition_status = snapshot['engine_running']
+        
         current_time = datetime.now()
         time_delta = current_time - self.last_calc
         time_step = time_delta.seconds + (

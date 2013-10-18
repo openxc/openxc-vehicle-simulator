@@ -11,10 +11,14 @@ class LonCalc(DataCalc):
         self.last_calc = datetime.now()
         self.earth_circumference_equator_km = 40075.0
         self.km_per_deg_equator = self.earth_circumference_equator_km / 360.0
-        self.name = 'longitutde'
+        self.name = 'longitude'
 
     # Any necessary data should be passed in
-    def iterate(self, vehicle_speed, heading, lat):
+    def iterate(self, snapshot):
+        vehicle_speed = snapshot['vehicle_speed']
+        heading = snapshot['heading']
+        lat = snapshot['latitude']
+        
         current_time = datetime.now()
         time_delta = current_time - self.last_calc
         self.last_calc = current_time

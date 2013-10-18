@@ -11,8 +11,11 @@ class SpeedCalc(DataCalc):
         self.last_calc = datetime.now()
         self.name = 'vehicle_speed'
 
-    def iterate(self, accelerator_percent, brake, parking_brake_status,
-            ignition_status):
+    def iterate(self, snapshot):
+        accelerator_percent = snapshot['accelerator']
+        brake = snapshot['brake']
+        parking_brake_status = snapshot['parking_brake_status']
+        ignition_status = snapshot['engine_running']
 
         # Any necessary data should be passed in
         AIR_DRAG_COEFFICIENT = .000008

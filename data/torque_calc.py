@@ -10,7 +10,11 @@ class TorqueCalc(DataCalc):
         self.name = 'torque_at_transmission'
 
     # Any necessary data should be passed in
-    def iterate(self, accelerator, engine_speed, engine_running):
+    def iterate(self, snapshot):
+        accelerator = snapshot['accelerator']
+        engine_speed = snapshot['engine_speed']
+        engine_running = snapshot['engine_running']
+        
         drag = engine_speed * self.engine_to_torque
         power = accelerator * 15
         if engine_running:
