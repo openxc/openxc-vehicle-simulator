@@ -41,13 +41,12 @@ class EnablerConnection():
             handler.start()
             self.connections.append(handler)
 
-    def send_measurement(self, name, value):
-        send_string = json.dumps({'name':name,'value':value})
-        self.send(send_string + "\n")
-
-    def send_event(self, name, value, event):
-        send_string = json.dumps({'name':name,'value':value,'event':event})
-        self.send(send_string + "\n")
+    def send_measurement(self, name, value, event=None):
+        data = {'name':name,'value':value}
+        if event is not None and event != '':
+            data['event'] = event
+        print("sending: %s\n" % data)
+        self.send(json.dumps(data) + "\n")
 
     def received_messages(self):
         all_received_data = ''.join(handler.received_command_data for handler in

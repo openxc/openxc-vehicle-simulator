@@ -178,12 +178,12 @@ class StateManager(object):
         self.connection.send_measurement("steering_wheel_angle",
                 self.steering_wheel_angle)
 
-    def send_callback(self, data_name, value):
-        self.connection.send_measurement(data_name, value)
+    def send_callback(self, data_name, value, event=None):
+        self.connection.send_measurement(data_name, value, event)
 
     def update_door(self, door, value):
         self.door_status[door] = value
-        self.connection.send_event("door_status", door, value)
+        self.connection.send_measurement("door_status", door, value)
 
     def received_messages(self):
         return self.connection.received_messages()

@@ -67,6 +67,27 @@ Vehicle Controls:
     <input type="checkbox" name="left_rear_door_check" id="left_rear_door_check" />
 </form>
 
+<h3>Custom Message</h3>
+<br><form id="custom_message_form" method="POST" action="{{
+        url_for('send_custom_message') }}">
+    <p>
+        <label for="custom_message_name">Name</label>
+        <input type="text" name="custom_message_name" id="custom_message_name"
+                value="{{ session['custom_message_name'] }}"/>
+    </p>
+    <p>
+        <label for="custom_message_value">Value (only works for string values)</label>
+    <input type="text" name="custom_message_value" id="custom_message_value"
+                value="{{ session['custom_message_value'] }}"/>
+    </p>
+    <p>
+    <label for="custom_message_event">Event</label>
+    <input type="text" name="custom_message_event" id="custom_message_event"
+                value="{{ session['custom_message_event'] }}"/>
+    </p>
+    <button type="submit">Send</button>
+</form>
+
      {% if session.updates_paused %}
       <form action="{{ url_for('single') }}" method=post class=add-entry>
       <dl>
