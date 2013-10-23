@@ -54,7 +54,7 @@ Vehicle Controls:
     <input type="checkbox" name="windshield_wiper_check"
         id="windshield_wiper_check" />
 </form>
-    
+
 <br><form id="door_status">
     Door Ajar:
     <label for="driver_door_check">Driver:</label>
@@ -97,5 +97,12 @@ Vehicle Controls:
         <tr><td>Latitude: </td><td id="latitude"></td><td></td></tr>
         <tr><td>Longitude: </td><td id="longitude"></td><td></td></tr>
       </table>
+
+      <h3>Received Command Data</h3>
+      <pre><code>
+          {% for received_message in received_messages %}
+              {{ received_message }}
+          {% endfor %}
+      </code></pre>
 
 {% endblock %}

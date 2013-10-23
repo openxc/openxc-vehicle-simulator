@@ -184,3 +184,6 @@ class StateManager(object):
     def update_door(self, door, value):
         self.door_status[door] = value
         self.connection.send_event("door_status", door, value)
+
+    def received_messages(self):
+        return self.connection.received_messages()
