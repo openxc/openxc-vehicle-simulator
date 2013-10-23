@@ -39,10 +39,8 @@ class EnablerConnection():
             print("New connection to " + this_ip + " from " + str(addr))
             self.connections.append(conn)
 
-    def send_measurement(self, name, value):
-        send_string = json.dumps({'name':name,'value':value})
-        self.send(send_string + "\n")
-
-    def send_event(self, name, value, event):
-        send_string = json.dumps({'name':name,'value':value,'event':event})
-        self.send(send_string + "\n")
+    def send_measurement(self, name, value, event=None):
+        data = {'name':name,'value':value}
+        if event is not None and event != '':
+            data['event'] = event
+        self.send(json.dumps(data) + "\n")
