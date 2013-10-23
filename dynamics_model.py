@@ -54,8 +54,6 @@ class DynamicsModel(object):
         self.engine_running = True
         self.ignition_data = 'run'
 
-        print self.snapshot
-
         self.stopped = False
 
     def physics_loop(self):
