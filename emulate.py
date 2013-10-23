@@ -29,7 +29,7 @@ def vehicle_data():
      return render_template('vehicle_controls.html', IP=gState.local_ip,
              accelerator=gState.accelerator_pedal_position,
              angle=gState.steering_wheel_angle,
-             received_messages=gState.received_messages())
+             received_messages=list(reversed(gState.received_messages()))[:25])
 
 @app.route('/stop', methods=['POST'])
 def stop():
