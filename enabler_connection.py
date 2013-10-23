@@ -45,7 +45,6 @@ class EnablerConnection():
         data = {'name':name,'value':value}
         if event is not None and event != '':
             data['event'] = event
-        print("sending: %s\n" % data)
         self.send(json.dumps(data) + "\n")
 
     def received_messages(self):
