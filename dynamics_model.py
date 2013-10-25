@@ -120,15 +120,6 @@ class DynamicsModel(object):
     @property
     def data(self):
         return json.dumps(self.snapshot)
-#        return jsonify(vehicle_speed=self.vehicle_speed,
-#                       transmission_gear_posiotion=self.gear_data.get(),
-#                       torque_at_transmission=self.torque,
-#                       engine_speed=self.engine_speed,
-#                       fuel_consumed_since_restart=self.fuel_consumed,
-#                       odometer=self.odometer,
-#                       fuel_level=self.fuel_level,
-#                       latitude=self.lat,
-#                       longitude=self.lon)
 
     @property
     def ignition_status(self):
@@ -143,3 +134,7 @@ class DynamicsModel(object):
             self.engine_running = False
         elif value == 'accessory':
             self.engine_running = False
+
+    @property
+    def transmission_gear_position(self):
+        return self.snapshot['transmission_gear_position']

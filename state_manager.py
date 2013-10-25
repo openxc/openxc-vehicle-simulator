@@ -10,18 +10,18 @@ class StateManager(object):
         self.dynamics_model = dynamics_model.DynamicsModel(
                 self.connection.send_measurement)
 
+        self.headlamp = False
+        self.highbeams = False
+        self.wipers = False
+        self.door_status = {'driver':False, 'passenger':False,
+                'left_rear':False, 'right_rear':False}
+
         self.start_send_loop(self.send_loop_1Hz, "Thread-1Hz")
         self.start_send_loop(self.send_loop_4Hz, "Thread-4Hz")
         self.start_send_loop(self.send_loop_6Hz, "Thread-6Hz")
         self.start_send_loop(self.send_loop_10Hz, "Thread-10Hz")
         self.start_send_loop(self.send_loop_48Hz, "Thread-48Hz")
         self.start_send_loop(self.send_loop_60Hz, "Thread-60Hz")
-
-        self.headlamp = False
-        self.highbeams = False
-        self.wipers = False
-        self.door_status = {'driver':False, 'passenger':False,
-                'left_rear':False, 'right_rear':False}
 
         print('State Manager initialized')
 
@@ -133,6 +133,20 @@ class StateManager(object):
                         self.dynamics_model.lat)
         self.connection.send_measurement("longitude",
                         self.dynamics_model.lon)
+        self.connection.send_measurement("parking_brake_status",
+                        self.dynamics_model.parking_brake_status)
+        self.connection.send_measurement("brake_pedal_status",
+                        self.dynamics_model.brake_pedal_status)
+        self.connection.send_measurement("transmission_gear_position",
+                        self.dynamics_model.transmission_gear_position)
+        self.connection.send_measurement("ignition_status",
+                        self.dynamics_model.ignition_status)
+        self.connection.send_measurement("headlamp_status",
+                        self.headlamp)
+        self.connection.send_measurement("high_beam_status",
+                        self.headlamp)
+        self.connection.send_measurement("windshield_wiper_status",
+                        self.wipers)
         time.sleep(1.0)
 
     def send_loop_4Hz(self):
