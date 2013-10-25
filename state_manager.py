@@ -147,6 +147,8 @@ class StateManager(object):
                         self.headlamp)
         self.connection.send_measurement("windshield_wiper_status",
                         self.wipers)
+        for door in self.door_status:
+            self.connection.send_event("door_status", door, self.door_status[door])
         time.sleep(1.0)
 
     def send_loop_4Hz(self):
