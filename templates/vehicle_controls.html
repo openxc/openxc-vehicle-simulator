@@ -67,6 +67,17 @@ Vehicle Controls:
     <input type="checkbox" name="left_rear_door_check" id="left_rear_door_check" />
 </form>
 
+    <table>Vehicle Dynamics Data:
+        <tr><td>Torque at Transmission: </td><td id="torque"></td><td>Nm</td></tr>
+        <tr><td>Engine Speed: </td><td id="engine_speed"></td><td>RPM</td></tr>
+        <tr><td>Vehicle Speed: </td><td id="vehicle_speed"></td><td>km/hr</td></tr>
+        <tr><td>Fuel Consumed Since Restart: </td><td id="fuel_consumed"></td><td>L</td></tr>
+        <tr><td>Odometer: </td><td id="odometer"></td><td>km</td></tr>
+        <tr><td>Fuel Level: </td><td id="fuel_level"></td><td>%</td></tr>
+        <tr><td>Latitude: </td><td id="latitude"></td><td></td></tr>
+        <tr><td>Longitude: </td><td id="longitude"></td><td></td></tr>
+    </table>
+
 <h3>Custom Message</h3>
 <br><form id="custom_message_form" method="POST" action="{{
         url_for('send_custom_message') }}">
@@ -107,17 +118,6 @@ Vehicle Controls:
       </form>
 
       {% endif %}
-
-      <table>Vehicle Dynamics Data:
-        <tr><td>Torque at Transmission: </td><td id="torque"></td><td>Nm</td></tr>
-        <tr><td>Engine Speed: </td><td id="engine_speed"></td><td>RPM</td></tr>
-        <tr><td>Vehicle Speed: </td><td id="vehicle_speed"></td><td>km/hr</td></tr>
-        <tr><td>Fuel Consumed Since Restart: </td><td id="fuel_consumed"></td><td>L</td></tr>
-        <tr><td>Odometer: </td><td id="odometer"></td><td>km</td></tr>
-        <tr><td>Fuel Level: </td><td id="fuel_level"></td><td>%</td></tr>
-        <tr><td>Latitude: </td><td id="latitude"></td><td></td></tr>
-        <tr><td>Longitude: </td><td id="longitude"></td><td></td></tr>
-      </table>
 
       <h3>Received Command Data</h3>
       <pre><code>
