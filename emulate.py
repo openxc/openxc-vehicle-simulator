@@ -28,7 +28,8 @@ def vehicle_data():
      global gState
      return render_template('vehicle_controls.html', IP=gState.local_ip,
              accelerator=gState.accelerator_pedal_position,
-             angle=gState.steering_wheel_angle)
+             angle=gState.steering_wheel_angle,
+             received_messages=list(reversed(gState.received_messages()))[:25])
 
 @app.route('/stop', methods=['POST'])
 def stop():
@@ -51,6 +52,18 @@ def start():
      session.pop('updates_paused', None)
      global gState
      gState.resume()
+     return redirect(url_for('vehicle_data'))
+
+@app.route('/custom-message', methods=['POST'])
+def send_custom_message():
+     name = request.form['custom_message_name']
+     value = request.form['custom_message_value']
+     event = request.form['custom_message_event']
+
+     session['custom_message_name'] = name
+     session['custom_message_value'] = value
+     session['custom_message_event'] = event
+     gState.send_callback(name, value, event)
      return redirect(url_for('vehicle_data'))
 
 @app.route('/_set_data', methods=['POST'])

@@ -16,15 +16,15 @@ class EnablerConnection():
         t.start()
 
     def send(self, outString):
-        for connection in self.connections:
+        for socket_handler in self.connections:
             try:
-                connection.sendall(outString)
-            except Exception:
+                socket_handler.send(outString)
+            except Exception as e:
                 # TODO:  Isolate dropped connection, recover from other things.
                 # For now, no recovery.  If ANYTHING goes wrong, drop the
                 # connection.
-                print("Exception while sending data.")
-                self.connections.remove(connection)
+                print("Exception while sending data: %s" % e)
+                self.connections.remove(socket_handler)
                 print("Connection dropped.")
 
     def listen_loop(self, this_ip):
@@ -37,12 +37,36 @@ class EnablerConnection():
         while True:
             conn, addr = s.accept()
             print("New connection to " + this_ip + " from " + str(addr))
-            self.connections.append(conn)
+            handler = SocketHandler(conn, addr)
+            handler.start()
+            self.connections.append(handler)
 
-    def send_measurement(self, name, value):
-        send_string = json.dumps({'name':name,'value':value})
-        self.send(send_string + "\n")
+    def send_measurement(self, name, value, event=None):
+        data = {'name':name,'value':value}
+        if event is not None and event != '':
+            data['event'] = event
+        self.send(json.dumps(data) + "\n")
 
-    def send_event(self, name, value, event):
-        send_string = json.dumps({'name':name,'value':value,'event':event})
-        self.send(send_string + "\n")
+    def received_messages(self):
+        all_received_data = ''.join(handler.received_command_data for handler in
+                self.connections)
+        return all_received_data.split('\0')
+
+class SocketHandler(threading.Thread):
+    def __init__(self, connection, address):
+        super(SocketHandler, self).__init__()
+        self.daemon = True
+        self.connection = connection
+        self.address = address
+        self.received_command_data = ""
+
+    def send(self, data):
+        self.connection.sendall(data)
+
+    def run(self):
+        while True:
+            data = self.connection.recv(1024)
+            if not data:
+                break
+            else:
+                self.received_command_data += data

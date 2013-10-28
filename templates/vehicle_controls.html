@@ -54,7 +54,7 @@ Vehicle Controls:
     <input type="checkbox" name="windshield_wiper_check"
         id="windshield_wiper_check" />
 </form>
-    
+
 <br><form id="door_status">
     Door Ajar:
     <label for="driver_door_check">Driver:</label>
@@ -65,6 +65,27 @@ Vehicle Controls:
     <input type="checkbox" name="right_rear_door_check" id="right_rear_door_check" />
     <label for="left_rear_door_check">Left Rear:</label>
     <input type="checkbox" name="left_rear_door_check" id="left_rear_door_check" />
+</form>
+
+<h3>Custom Message</h3>
+<br><form id="custom_message_form" method="POST" action="{{
+        url_for('send_custom_message') }}">
+    <p>
+        <label for="custom_message_name">Name</label>
+        <input type="text" name="custom_message_name" id="custom_message_name"
+                value="{{ session['custom_message_name'] }}"/>
+    </p>
+    <p>
+        <label for="custom_message_value">Value (only works for string values)</label>
+    <input type="text" name="custom_message_value" id="custom_message_value"
+                value="{{ session['custom_message_value'] }}"/>
+    </p>
+    <p>
+    <label for="custom_message_event">Event</label>
+    <input type="text" name="custom_message_event" id="custom_message_event"
+                value="{{ session['custom_message_event'] }}"/>
+    </p>
+    <button type="submit">Send</button>
 </form>
 
      {% if session.updates_paused %}
@@ -97,5 +118,12 @@ Vehicle Controls:
         <tr><td>Latitude: </td><td id="latitude"></td><td></td></tr>
         <tr><td>Longitude: </td><td id="longitude"></td><td></td></tr>
       </table>
+
+      <h3>Received Command Data</h3>
+      <pre><code>
+          {% for received_message in received_messages %}
+              {{ received_message }}
+          {% endfor %}
+      </code></pre>
 
 {% endblock %}
