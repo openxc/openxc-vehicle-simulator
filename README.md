@@ -80,6 +80,8 @@ Interface, and the Dynamics Model.  The Network Connection to the OpenXC Enabler
 makes use of the
 [OpenXC Web API](https://github.com/openxc/web-logging-example#api).
 
+![Project Overview](docs/Overview.png)
+
 ### User Interface
 ![Emulator screen shot](docs/emulator-screen-shot.png)
 The GUI allows real time user input.  (pedals, gear, steering wheel, etc.)  The
