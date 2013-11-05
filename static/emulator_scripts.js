@@ -49,11 +49,7 @@ $(function() {
     });
   });
 
-$(function() {
-    $('#parking_brake_check').change(function(){
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "parking_brake_status", value: this.checked});
-    });
-});
+//Ignition radio buttons
 
 $(function() {
     $( '#ignition_radio' ).buttonset();
@@ -83,9 +79,41 @@ $(function(){
     });
 });
 
+//Gear Lever Radio Buttons
+
 $(function() {
-    $('#ignition_check').change(function(){
-        jQuery.post($SCRIPT_ROOT + '/_set_data', { name:"ignition_status", value: this.checked});
+    $( '#gear_radio' ).buttonset();
+});
+
+$(function(){
+    $( '#gear_park' ).change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "gear_lever_position", value: 'park'});
+    });
+});
+
+$(function(){
+    $( '#gear_drive' ).change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "gear_lever_position", value: 'drive'});
+    });
+});
+
+$(function(){
+    $( '#gear_neutral' ).change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "gear_lever_position", value: 'neutral'});
+    });
+});
+
+$(function(){
+    $( '#gear_reverse' ).change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "gear_lever_position", value: 'reverse'});
+    });
+});
+
+//Single check boxes
+
+$(function() {
+    $('#parking_brake_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "parking_brake_status", value: this.checked});
     });
 });
 

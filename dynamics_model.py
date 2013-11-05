@@ -53,6 +53,7 @@ class DynamicsModel(object):
         self.parking_brake_status = False
         self.engine_running = True
         self.ignition_data = 'run'
+        self.gear_lever = 'drive'
 
         self.stopped = False
 
@@ -134,6 +135,14 @@ class DynamicsModel(object):
             self.engine_running = False
         elif value == 'accessory':
             self.engine_running = False
+
+    @property
+    def gear_lever_position(self):
+        return self.gear_lever
+
+    @gear_lever_position.setter
+    def gear_lever_position(self, value):
+        self.gear_lever = value
 
     @property
     def transmission_gear_position(self):

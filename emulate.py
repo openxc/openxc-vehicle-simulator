@@ -91,8 +91,10 @@ def set_data():
      elif name == "door_status":
           gState.update_door(request.form['value'], python_bool(
                request.form['event']))
+     elif name == "gear_lever_position":
+          gState.gear_lever_position = request.form['value']
      else:
-          print("Unsupported data received from UI: " + name)
+          print("Unsupported data received from UI: " + str(request.form))
 
      return _make_status_response(201)
 

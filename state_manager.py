@@ -76,6 +76,16 @@ class StateManager(object):
             self.dynamics_model.ignition_status = value
 
     @property
+    def gear_lever_position(self):
+        return self.dynamics_model.gear_lever_position
+
+    @gear_lever_position.setter
+    def gear_lever_position(self, value):
+        if value != self.dynamics_model.gear_lever_position:
+            self.connection.send_measurement("gear_lever_position", value)
+            self.dynamics_model.gear_lever_position = value
+
+    @property
     def headlamp_status(self):
         return self.headlamp
 
@@ -147,6 +157,8 @@ class StateManager(object):
                         self.headlamp)
         self.connection.send_measurement("windshield_wiper_status",
                         self.wipers)
+        self.connection.send_measurement("gear_lever_position",
+                        self.dynamics_model.gear_lever_position)
         for door in self.door_status:
             self.connection.send_measurement("door_status", door, self.door_status[door])
         time.sleep(1.0)
