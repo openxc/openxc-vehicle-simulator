@@ -69,7 +69,7 @@ class StateManager(object):
     def ignition_status(self):
         return self.dynamics_model.ignition_status
 
-    @parking_brake_status.setter
+    @ignition_status.setter
     def ignition_status(self, value):
         if value != self.dynamics_model.ignition_status:
             self.connection.send_measurement("ignition_status", value)
@@ -89,7 +89,7 @@ class StateManager(object):
     def headlamp_status(self):
         return self.headlamp
 
-    @parking_brake_status.setter
+    @headlamp_status.setter
     def headlamp_status(self, value):
         if value != self.headlamp:
             self.connection.send_measurement("headlamp_status", value)
@@ -99,7 +99,7 @@ class StateManager(object):
     def high_beam_status(self):
         return self.highbeam
 
-    @parking_brake_status.setter
+    @high_beam_status.setter
     def high_beam_status(self, value):
         if value != self.highbeam:
             self.connection.send_measurement("high_beam_status", value)
