@@ -55,6 +55,13 @@ class DynamicsModel(object):
         self.ignition_data = 'run'
         self.gear_lever = 'drive'
 
+        self.snapshot['accelerator_pedal_position'] = self.accelerator
+        self.snapshot['brake'] = self.brake
+        self.snapshot['steering_wheel_angle'] = self.steering_wheel_angle
+        self.snapshot['parking_brake_status'] = self.parking_brake_status
+        self.snapshot['engine_running'] = self.engine_running
+        self.snapshot['ignition_data'] = self.ignition_data
+
         self.stopped = False
 
     def physics_loop(self):
@@ -66,18 +73,18 @@ class DynamicsModel(object):
                     #Assuming less than a second.
                 self.next_iterate = self.next_iterate + self.delay_100Hz
 
-                # Store the latest user input...
-                self.snapshot['accelerator'] = self.accelerator
-                self.snapshot['brake'] = self.brake
-                self.snapshot['steering_wheel_angle'] = self.steering_wheel_angle
-                self.snapshot['parking_brake_status'] = self.parking_brake_status
-                self.snapshot['engine_running'] = self.engine_running
-                self.snapshot['ignition_data'] = self.ignition_data
-
                 new_snapshot = {}
                 for data in self.calculations:
                     data.iterate(self.snapshot)
                     new_snapshot[data.name] = data.get()
+                    
+                # Store the latest user input...
+                new_snapshot['accelerator_pedal_position'] = self.accelerator
+                new_snapshot['brake'] = self.brake
+                new_snapshot['steering_wheel_angle'] = self.steering_wheel_angle
+                new_snapshot['parking_brake_status'] = self.parking_brake_status
+                new_snapshot['engine_running'] = self.engine_running
+                new_snapshot['ignition_data'] = self.ignition_data
 
                 self.snapshot = new_snapshot
 # Properties  ---------------------

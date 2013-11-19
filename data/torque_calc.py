@@ -13,7 +13,7 @@ class TorqueCalc(DataCalc):
 
     # Any necessary data should be passed in
     def iterate(self, snapshot):
-        accelerator = snapshot['accelerator']
+        accelerator = snapshot['accelerator_pedal_position']
         engine_speed = snapshot['engine_speed']
         engine_running = snapshot['engine_running']
         gear_number = self.gear_numbers[snapshot['transmission_gear_position']]

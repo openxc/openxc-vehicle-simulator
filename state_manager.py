@@ -2,6 +2,7 @@ import enabler_connection
 import dynamics_model
 import threading
 import time
+import datetime
 
 class StateManager(object):
     def __init__(self):
@@ -17,11 +18,43 @@ class StateManager(object):
                 'left_rear':False, 'right_rear':False}
 
         self.start_send_loop(self.send_loop_1Hz, "Thread-1Hz")
-        self.start_send_loop(self.send_loop_4Hz, "Thread-4Hz")
-        self.start_send_loop(self.send_loop_6Hz, "Thread-6Hz")
         self.start_send_loop(self.send_loop_10Hz, "Thread-10Hz")
         self.start_send_loop(self.send_loop_48Hz, "Thread-48Hz")
-        self.start_send_loop(self.send_loop_60Hz, "Thread-60Hz")
+
+        self.data = []
+
+        period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
+        self.data.append({'name':'steering_wheel_angle',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
+
+        period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
+        self.data.append({'name':'torque_at_transmission',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
+
+        period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
+        self.data.append({'name':'engine_speed',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
+
+        period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
+        self.data.append({'name':'vehicle_speed',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
+
+        period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
+        self.data.append({'name':'accelerator_pedal_position',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
+
+        self.start_send_loop(self.send_all_loop, "Send-Thread")
+        
 
         print('State Manager initialized')
 
@@ -138,6 +171,21 @@ class StateManager(object):
             else:
                 time.sleep(0.5)
 
+    def send_all_loop(self):
+        snapshot = self.dynamics_model.snapshot
+        now = datetime.datetime.now()
+
+        for signal in self.data:
+            if signal['fast_update']:
+                if snapshot[signal['name']] != signal['last_value']:
+                    self.connection.send_measurement(signal['name'],
+                        snapshot[signal['name']])
+            elif now > signal['deadline']:
+                self.connection.send_measurement(signal['name'],
+                    snapshot[signal['name']])
+                signal['deadline'] = now + signal['period']
+        time.sleep(0.01)
+
     def send_loop_1Hz(self):
         self.connection.send_measurement("latitude",
                         self.dynamics_model.lat)
@@ -163,18 +211,6 @@ class StateManager(object):
             self.connection.send_measurement("door_status", door, self.door_status[door])
         time.sleep(1.0)
 
-    def send_loop_4Hz(self):
-        self.connection.send_measurement("vehicle_speed",
-                        self.dynamics_model.vehicle_speed)
-        self.connection.send_measurement("engine_speed",
-                        self.dynamics_model.engine_speed)
-        time.sleep(1.0/4)
-
-    def send_loop_6Hz(self):
-        self.connection.send_measurement("steering_wheel_angle",
-                        self.steering_wheel_angle)
-        time.sleep(1.0/6)
-
     def send_loop_10Hz(self):
         self.connection.send_measurement("fuel_consumed_since_restart",
                         self.dynamics_model.fuel_consumed)
@@ -186,13 +222,6 @@ class StateManager(object):
         self.connection.send_measurement("fuel_level",
                         self.dynamics_model.fuel_level)
         time.sleep(1.0/48)
-
-    def send_loop_60Hz(self):
-        self.connection.send_measurement("accelerator_pedal_position",
-                        self.dynamics_model.accelerator)
-        self.connection.send_measurement("torque_at_transmission",
-                        self.dynamics_model.torque)
-        time.sleep(1.0/60)
 
     def pause(self):
         self.stopped = True

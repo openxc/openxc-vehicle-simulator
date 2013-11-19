@@ -14,7 +14,7 @@ class FuelConsumedCalc(DataCalc):
 
     # Any necessary data should be passed in
     def iterate(self, snapshot):
-        accelerator_percent = snapshot['accelerator']
+        accelerator_percent = snapshot['accelerator_pedal_position']
         ignition_status = snapshot['engine_running']
         
         current_time = datetime.now()

@@ -12,7 +12,7 @@ class SpeedCalc(DataCalc):
         self.name = 'vehicle_speed'
 
     def iterate(self, snapshot):
-        accelerator_percent = snapshot['accelerator']
+        accelerator_percent = snapshot['accelerator_pedal_position']
         brake = snapshot['brake']
         parking_brake_status = snapshot['parking_brake_status']
         ignition_status = snapshot['engine_running']
