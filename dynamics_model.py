@@ -17,8 +17,8 @@ from data import lat_calc
 from data import lon_calc
 
 class DynamicsModel(object):
-    def __init__(self, update_callback):
-        self._initialize_data(update_callback)
+    def __init__(self):
+        self._initialize_data()
 
         t = threading.Thread(target=self.physics_loop, name="Thread-Physics")
         t.setDaemon(True)
@@ -26,10 +26,10 @@ class DynamicsModel(object):
 
         print("Dynamics Model initialized")
 
-    def _initialize_data(self, update_callback):
+    def _initialize_data(self):
         self.calculations = []
         self.calculations.append(speed_calc.SpeedCalc())
-        self.calculations.append(gear_calc.GearCalc(update_callback))
+        self.calculations.append(gear_calc.GearCalc())
         self.calculations.append(torque_calc.TorqueCalc())
         self.calculations.append(engine_speed_calc.EngineSpeedCalc())
         self.calculations.append(fuel_consumed_calc.FuelConsumedCalc())
@@ -60,7 +60,9 @@ class DynamicsModel(object):
         self.snapshot['steering_wheel_angle'] = self.steering_wheel_angle
         self.snapshot['parking_brake_status'] = self.parking_brake_status
         self.snapshot['engine_running'] = self.engine_running
-        self.snapshot['ignition_data'] = self.ignition_data
+        self.snapshot['ignition_status'] = self.ignition_data
+        self.snapshot['brake_pedal_status'] = self.brake_pedal_status
+        self.snapshot['gear_lever_position'] = self.gear_lever
 
         self.stopped = False
 
@@ -84,7 +86,9 @@ class DynamicsModel(object):
                 new_snapshot['steering_wheel_angle'] = self.steering_wheel_angle
                 new_snapshot['parking_brake_status'] = self.parking_brake_status
                 new_snapshot['engine_running'] = self.engine_running
-                new_snapshot['ignition_data'] = self.ignition_data
+                new_snapshot['ignition_status'] = self.ignition_data
+                new_snapshot['brake_pedal_status'] = self.brake_pedal_status
+                new_snapshot['gear_lever_position'] = self.gear_lever
 
                 self.snapshot = new_snapshot
 # Properties  ---------------------

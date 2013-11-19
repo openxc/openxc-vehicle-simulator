@@ -8,53 +8,99 @@ class StateManager(object):
     def __init__(self):
         self.stopped = False
         self.connection = enabler_connection.EnablerConnection()
-        self.dynamics_model = dynamics_model.DynamicsModel(
-                self.connection.send_measurement)
-
+        self.dynamics_model = dynamics_model.DynamicsModel()
+        
         self.headlamp = False
         self.highbeams = False
         self.wipers = False
         self.door_status = {'driver':False, 'passenger':False,
                 'left_rear':False, 'right_rear':False}
 
-        self.start_send_loop(self.send_loop_1Hz, "Thread-1Hz")
-        self.start_send_loop(self.send_loop_10Hz, "Thread-10Hz")
-        self.start_send_loop(self.send_loop_48Hz, "Thread-48Hz")
+        self.start_send_loop(self.send_local_loop, "Send-Local-Thread")
 
         self.data = []
-
         period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
         self.data.append({'name':'steering_wheel_angle',
                            'period': period,
                            'deadline': datetime.datetime.now() + period,
                            'fast_update': False})
-
         period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
         self.data.append({'name':'torque_at_transmission',
                            'period': period,
                            'deadline': datetime.datetime.now() + period,
                            'fast_update': False})
-
         period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
         self.data.append({'name':'engine_speed',
                            'period': period,
                            'deadline': datetime.datetime.now() + period,
                            'fast_update': False})
-
         period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
         self.data.append({'name':'vehicle_speed',
                            'period': period,
                            'deadline': datetime.datetime.now() + period,
                            'fast_update': False})
-
         period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
         self.data.append({'name':'accelerator_pedal_position',
                            'period': period,
                            'deadline': datetime.datetime.now() + period,
                            'fast_update': False})
+        period = datetime.timedelta(microseconds = 1000000/1)  #1Hz
+        self.data.append({'name':'parking_brake_status',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': True,
+                           'last_value': False})
+        period = datetime.timedelta(microseconds = 1000000/1)  #1Hz
+        self.data.append({'name':'brake_pedal_status',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': True,
+                           'last_value': False})
+        period = datetime.timedelta(microseconds = 1000000/1)  #1Hz
+        self.data.append({'name':'transmission_gear_position',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': True,
+                           'last_value': 'first'})
+        period = datetime.timedelta(microseconds = 1000000/1)  #1Hz
+        self.data.append({'name':'gear_lever_position',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': True,
+                           'last_value': 'drive'})
+        period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
+        self.data.append({'name':'odometer',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
+        period = datetime.timedelta(microseconds = 1000000/1)  #1Hz
+        self.data.append({'name':'ignition_status',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': True,
+                           'last_value': 'run'})
+        period = datetime.timedelta(microseconds = 1000000/2)  #2Hz
+        self.data.append({'name':'fuel_level',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
+        period = datetime.timedelta(microseconds = 1000000/10)  #10Hz
+        self.data.append({'name':'fuel_consumed_since_restart',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
+        period = datetime.timedelta(microseconds = 1000000/1)  #1Hz
+        self.data.append({'name':'latitude',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
+        period = datetime.timedelta(microseconds = 1000000/1)  #1Hz
+        self.data.append({'name':'longitude',
+                           'period': period,
+                           'deadline': datetime.datetime.now() + period,
+                           'fast_update': False})
 
-        self.start_send_loop(self.send_all_loop, "Send-Thread")
-        
+        self.start_send_loop(self.send_dynamics_loop, "Send-Dynamic-Thread")
 
         print('State Manager initialized')
 
@@ -82,8 +128,6 @@ class StateManager(object):
 
     @parking_brake_status.setter
     def parking_brake_status(self, value):
-        if value != self.dynamics_model.parking_brake_status:
-            self.connection.send_measurement("parking_brake_status", value)
         self.dynamics_model.parking_brake_status = value
 
     @property
@@ -92,11 +136,7 @@ class StateManager(object):
 
     @brake_pedal_position.setter
     def brake_pedal_position(self, value):
-        old_brake = self.dynamics_model.brake_pedal_status
         self.dynamics_model.brake = value
-        if old_brake != self.dynamics_model.brake_pedal_status:
-            self.connection.send_measurement("brake_pedal_status",
-                        self.dynamics_model.brake_pedal_status)
 
     @property
     def ignition_status(self):
@@ -104,9 +144,7 @@ class StateManager(object):
 
     @ignition_status.setter
     def ignition_status(self, value):
-        if value != self.dynamics_model.ignition_status:
-            self.connection.send_measurement("ignition_status", value)
-            self.dynamics_model.ignition_status = value
+        self.dynamics_model.ignition_status = value
 
     @property
     def gear_lever_position(self):
@@ -114,9 +152,7 @@ class StateManager(object):
 
     @gear_lever_position.setter
     def gear_lever_position(self, value):
-        if value != self.dynamics_model.gear_lever_position:
-            self.connection.send_measurement("gear_lever_position", value)
-            self.dynamics_model.gear_lever_position = value
+        self.dynamics_model.gear_lever_position = value
 
     @property
     def headlamp_status(self):
@@ -130,13 +166,13 @@ class StateManager(object):
 
     @property
     def high_beam_status(self):
-        return self.highbeam
+        return self.highbeams
 
     @high_beam_status.setter
     def high_beam_status(self, value):
-        if value != self.highbeam:
+        if value != self.highbeams:
             self.connection.send_measurement("high_beam_status", value)
-            self.headlamp = value
+            self.highbeams = value
 
     @property
     def windshield_wiper_status(self):
@@ -171,57 +207,34 @@ class StateManager(object):
             else:
                 time.sleep(0.5)
 
-    def send_all_loop(self):
+    def send_dynamics_loop(self):
         snapshot = self.dynamics_model.snapshot
         now = datetime.datetime.now()
 
         for signal in self.data:
-            if signal['fast_update']:
-                if snapshot[signal['name']] != signal['last_value']:
-                    self.connection.send_measurement(signal['name'],
-                        snapshot[signal['name']])
-            elif now > signal['deadline']:
+            if now > signal['deadline']:
                 self.connection.send_measurement(signal['name'],
                     snapshot[signal['name']])
                 signal['deadline'] = now + signal['period']
+                if signal['fast_update']:
+                    signal['last_value'] = snapshot[signal['name']]
+            elif signal['fast_update']:
+                if snapshot[signal['name']] != signal['last_value']:
+                    self.connection.send_measurement(signal['name'],
+                        snapshot[signal['name']])
+                    signal['last_value'] = snapshot[signal['name']]
         time.sleep(0.01)
 
-    def send_loop_1Hz(self):
-        self.connection.send_measurement("latitude",
-                        self.dynamics_model.lat)
-        self.connection.send_measurement("longitude",
-                        self.dynamics_model.lon)
-        self.connection.send_measurement("parking_brake_status",
-                        self.dynamics_model.parking_brake_status)
-        self.connection.send_measurement("brake_pedal_status",
-                        self.dynamics_model.brake_pedal_status)
-        self.connection.send_measurement("transmission_gear_position",
-                        self.dynamics_model.transmission_gear_position)
-        self.connection.send_measurement("ignition_status",
-                        self.dynamics_model.ignition_status)
+    def send_local_loop(self):
         self.connection.send_measurement("headlamp_status",
                         self.headlamp)
         self.connection.send_measurement("high_beam_status",
-                        self.headlamp)
+                        self.highbeams)
         self.connection.send_measurement("windshield_wiper_status",
                         self.wipers)
-        self.connection.send_measurement("gear_lever_position",
-                        self.dynamics_model.gear_lever_position)
         for door in self.door_status:
             self.connection.send_measurement("door_status", door, self.door_status[door])
         time.sleep(1.0)
-
-    def send_loop_10Hz(self):
-        self.connection.send_measurement("fuel_consumed_since_restart",
-                        self.dynamics_model.fuel_consumed)
-        self.connection.send_measurement("odometer",
-                        self.dynamics_model.odometer)
-        time.sleep(1.0/10)
-
-    def send_loop_48Hz(self):
-        self.connection.send_measurement("fuel_level",
-                        self.dynamics_model.fuel_level)
-        time.sleep(1.0/48)
 
     def pause(self):
         self.stopped = True

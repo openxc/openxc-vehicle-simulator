@@ -1,11 +1,10 @@
 from .data_calc import DataCalc
 
 class GearCalc(DataCalc):
-    def __init__(self, update_callback):
-        self.initialize_data(update_callback)
+    def __init__(self):
+        self.initialize_data()
 
-    def initialize_data(self, update_callback):
-        self.update = update_callback
+    def initialize_data(self):
         self.gear = 0
         self.gears = ['neutral', 'first', 'second', 'third', 'fourth',
                 'fifth', 'sixth' ]
@@ -22,8 +21,6 @@ class GearCalc(DataCalc):
         if vehicle_speed < self.speeds[self.gear][0]:
             self.gear = self.gear - 1
             self.data = self.gears[self.gear]
-            self.update('transmission_gear_position', self.data)
         elif vehicle_speed > self.speeds[self.gear][1]:
             self.gear = self.gear + 1
             self.data = self.gears[self.gear]
-            self.update('transmission_gear_position', self.data)
