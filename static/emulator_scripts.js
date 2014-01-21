@@ -172,7 +172,7 @@ $(function() {
         document.getElementById("fuel_consumed").innerHTML = (dataJSON.fuel_consumed_since_restart).toFixed(3);
         document.getElementById("odometer").innerHTML = (dataJSON.odometer).toFixed(3);
         document.getElementById("fuel_level").innerHTML = (dataJSON.fuel_level).toFixed(2);
-        document.getElementById("heading").innerHTML = (dataJSON.heading).toFixed(6);
+        document.getElementById("heading").innerHTML = (dataJSON.heading * 57.3).toFixed(0);
         document.getElementById("latitude").innerHTML = (dataJSON.latitude).toFixed(6);
         document.getElementById("longitude").innerHTML = (dataJSON.longitude).toFixed(6);
     }
