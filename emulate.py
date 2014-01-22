@@ -93,6 +93,10 @@ def set_data():
                request.form['event']))
      elif name == "gear_lever_position":
           gState.gear_lever_position = request.form['value']
+     elif name == "latitude":
+          gState.latitude = float(request.form['value'])
+     elif name == "longitude":
+          gState.longitude = float(request.form['value'])
      else:
           print("Unsupported data received from UI: " + str(request.form))
 

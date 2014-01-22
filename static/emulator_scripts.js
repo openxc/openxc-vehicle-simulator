@@ -159,6 +159,13 @@ $(function() {
     });
 });
 
+$(function() {
+    $('#new_lat_lon').click( function() {
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "latitude", value: $('input[name="new_lat"]').val()});
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "longitude", value: $('input[name="new_lon"]').val()});
+    });
+});
+
     function StartTimer() {
         setInterval(function(){
             GetData();

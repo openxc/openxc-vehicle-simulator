@@ -158,3 +158,23 @@ class DynamicsModel(object):
     @property
     def transmission_gear_position(self):
         return self.snapshot['transmission_gear_position']
+
+    @property
+    def latitude(self):
+        return self.snapshot['latitude']
+
+    @latitude.setter
+    def latitude(self, value):
+        for data in self.calculations:
+            if data.name == 'latitude':
+                data.data = value
+
+    @property
+    def longitude(self):
+        return self.snapshot['longitude']
+
+    @longitude.setter
+    def longitude(self, value):
+        for data in self.calculations:
+            if data.name == 'longitude':
+                data.data = value

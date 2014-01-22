@@ -218,6 +218,22 @@ class StateManager(object):
     def dynamics_data(self):
         return self.dynamics_model.data
 
+    @property
+    def latitude(self):
+        return self.dynamics_model.snapshot['latitude']
+
+    @latitude.setter
+    def latitude(self, value):
+        self.dynamics_model.latitude = value
+
+    @property
+    def longitude(self):
+        return self.dynamics_model.snapshot['longitude']
+
+    @longitude.setter
+    def longitude(self, value):
+        self.dynamics_model.longitude = value
+
 # Sending Data ------------------
 
     def start_send_loop(self, function, thread_name):
