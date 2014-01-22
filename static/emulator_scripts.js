@@ -161,6 +161,24 @@ $(function() {
 
 $(function() {
     $('#new_lat_lon').click( function() {
+        var lat = $('input[name="new_lat"]').val()
+        var lon = $('input[name="new_lon"]').val()
+
+        if(isNaN(lat) || isNaN(lon)) {
+            window.alert("Latitude and Longitude need to be numbers.");
+            return;
+        }
+
+        if((lat > 90) || (lat < -90)) {
+            window.alert("Latitude must be greater than -90 and less than 90.");
+            return;
+        }
+
+        if((lon > 180) || (lon < -180)) {
+            window.alert("Longitude must be greater than -180 and less than 180.");
+            return;
+        }
+
         jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "latitude", value: $('input[name="new_lat"]').val()});
         jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "longitude", value: $('input[name="new_lon"]').val()});
     });
