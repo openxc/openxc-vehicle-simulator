@@ -62,7 +62,7 @@ To open the UI, open a browser and navigate to http://localhost:50000/
 To connect with an Android device, open the Enabler activity, open the settings,
 choose Data Sources, and enable "Use a network device".
 
-<img src="docs/enabler_screenshot.png" height="320px" width="192px" />
+<img src="docs/Enabler_Screenshot.png" height="320px" width="192px" />
 
 Set the host address to the address of the machine running emulate.py, and set
 the port to 50001. You may need to disable and re-enable "Use a network device"
