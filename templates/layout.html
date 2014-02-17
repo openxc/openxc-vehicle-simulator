@@ -8,7 +8,7 @@ filename='style.css') }}">
     <script src="{{ url_for('static', filename='jquery-1.9.1.js') }}"></script>
     <script src="{{ url_for('static', filename='jquery-ui.js') }}"></script>
 
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='jquery-ui.css') }}" />
 
     <script type=text/javascript>
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
