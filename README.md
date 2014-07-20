@@ -1,22 +1,21 @@
 # openxc-vehicle-simulator
 
-## Overview
 The OpenXC Vehicle Simulator is a web application intended for developers to run
 on local machines to generate a simulated OpenXC vehicle data trace in real
 time, to be used for testing Android applications.
 
 This is intended to compliment the Enabler's ability to play back a recorded
-trace file.  The Simulator does not attempt to provide a high precision depiction
-of a specific vehicle.  If an app requires a high degree of accuracy, debuging
-should be done with a trace.  The Simulator provides real-time manipulation of
-the data.  This allows the developer to create and change desired conditions in
-real time.
+trace file.  The Simulator does not attempt to provide a high precision
+depiction of a specific vehicle.  If an app requires a high degree of accuracy,
+debuging should be done with a trace.  The Simulator provides real-time
+manipulation of the data.  This allows the developer to create and change
+desired conditions in real time.
 
 The OpenXC Simulator creates vehicle data in the OpenXC format, simulating data
-that comes from the OpenXC Vehicle Interface.  It simulates all of the signals in
-the
-[official OpenXC signal list](http://openxcplatform.com/vehicle-interface/output-format.html),
-at the listed frequencies.  The simulator also takes user input for the vehicle
+that comes from the OpenXC Vehicle Interface.  It simulates all of the signals
+in the [official OpenXC signal
+list](http://openxcplatform.com/vehicle-interface/output-format.html), at the
+listed frequencies.  The simulator also takes user input for the vehicle
 controls.  (Pedals, steering wheel, etc.)  The generated data is displayed for
 the user and sent to the Android host device via TCP connection.  The vehicle
 dynamics model is simple.  It is modular, allowing for different vehicles, but
@@ -40,19 +39,62 @@ for incoming network connections from the OpenXC Enabler, running on an Android
 device.
 
 ## Installing the Simulator
-Once you've cloned the repository, install the Python Flask dependencies with
-`pip`:
+
+Download the source code for the simulator by either:
+
+* Cloning the openxc-vehicle-simulator repository with Git
+* or downloading a ZIP file of the repository from the [repository at
+  GitHub](https://github.com/openxc/openxc-vehicle-simulator)
+
+### Python
+
+Next, install Python and `pip`:
+
+#### Mac OS X and Linux
+
+Mac OS X and most Linux distributions already have a compatible Python
+installed. Run `python --version` from a terminal to check - you need a
+2.7.x version, such as 2.7.8.
+
+#### Windows
+
+1. Download and run the [Python 2.7.x MSI
+   installer](https://www.python.org/download/releases/2.7.8/). Make sure to
+   select to option to `Add python.exe to Path`.
+1. Add the Python Scripts directory your PATH:
+   `PATH=%PATH%;c:\Python27\Scripts`. If you aren't sure how to edit your
+   `PATH`, see [this guide for all versions of Windows](https://www.java.com/en/download/help/path.xml). Log out and back in for
+   the change to take effect.
+1. Install [pip](https://pip.pypa.io/en/latest/installing.html#install-pip), a
+   Python package manager by saving the `get-pip.py` script to a file and
+   running it from a terminal.
+
+#### Cygwin
+
+From the `setup.exe` package list, select the `python` and
+`python-setuptools` packages. Then, inside Cygwin install `pip` using
+`easy_install`:
+
+      $ easy_install pip
+
+### Simulator Python Dependencies
+
+From the `openxc-vehicle-simulator` directory, run this to install all of the
+Python dependencies for the simulator:
 
       $ pip install -r pip-requirements.txt
 
 If that fails due to lack of permissions, there are a few options.  One is to
 use [VirtualEnv](https://pypi.python.org/pypi/virtualenv) as described in the
 [Flask installation documentation.](http://flask.pocoo.org/docs/installation/)
-Another option is to run the install with sudo:
+
+Another option is to run the install with sudo, which installs the packages to
+your system's Python libraries directory.
 
       $ sudo pip install -r pip-requirements.txt
 
 ## Running the Simulator
+
 To run the app:
 
       $ ./simulator.py
