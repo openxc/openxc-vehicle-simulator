@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>OpenXC Vehicle Emulator</title>
+    <title>OpenXC Vehicle Simulator</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static',
 filename='style.css') }}">
 
@@ -14,12 +14,12 @@ filename='style.css') }}">
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
 
-    <script src="{{ url_for('static', filename='emulator_scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='simulator_scripts.js') }}"></script>
 
 </head>
 <body>
     <div class=page>
-        <h1>OpenXC Vehicle Emulator</h1>
+        <h1>OpenXC Vehicle Simulator</h1>
             Connect the OpenXC Enabler to this machine's IP address, port 50001
         {% if IP != '127.0.0.1' %}
             <br>Detected IP: {{ IP }}

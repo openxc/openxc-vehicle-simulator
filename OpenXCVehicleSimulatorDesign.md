@@ -2,8 +2,8 @@
 
 ### Purpose
 
-The OpenXC Vehicle Simulator will emulate the data stream from an OpenXC Vehicle
-Interface.  It will run on a computer, and will emulate all of the signals
+The OpenXC Vehicle Simulator simulators the data stream from an OpenXC Vehicle
+Interface.  It will run on a computer, and will simulate all of the signals
 listed on the OpenXCPlatform.com Output Format page, at the listed frequencies.
 The simulator will also take user input for the vehicle controls.  (Pedals,
 steering wheel, etc.)  The generated JSON data will be displayed for the user
@@ -24,7 +24,7 @@ featureless sphere, solely for the purpose of generating GPS data.
 
 Data Connection - The data connection with the OpenXC host device will be either
 network or Bluetooth.  WiFi is more ubiquitous among target hardware, but
-Bluetooth more closely emulates a connection to a Vehicle Interface.
+Bluetooth more closely simulates a connection to a Vehicle Interface.
 
 Graphical User Interface - The GUI will allow real time user input.  (pedals,
 gear, steering wheel, etc.)  The user will also have the option to set initial
@@ -47,7 +47,7 @@ Vehicle Dynamics Model - The Vehicle Dynamics Model will iterate at a
 pre-determined rate.  (Tentatively 50 to 100Hz.)  Data will be kept in the
 Vehicle Dynamics Model with a higher precision than is used in the CAN traffic.
 (This will help reproduce conditions that have created failures in vehicles, but
-did not fail with the current emulator.)  Data will only be sent to the State
+did not fail with the current simulator.)  Data will only be sent to the State
 Manager at the frequencies defined in the OpenXC data format.
 
 A Note On Modularity - The components of the simulator will be as modular as

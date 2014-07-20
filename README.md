@@ -1,22 +1,22 @@
 # openxc-vehicle-simulator
 
 ## Overview
-The OpenXC Vehicle Emulator is a web application intended for developers to run
+The OpenXC Vehicle Simulator is a web application intended for developers to run
 on local machines to generate a simulated OpenXC vehicle data trace in real
 time, to be used for testing Android applications.
 
 This is intended to compliment the Enabler's ability to play back a recorded
-trace file.  The Emulator does not attempt to provide a high precision depiction
+trace file.  The Simulator does not attempt to provide a high precision depiction
 of a specific vehicle.  If an app requires a high degree of accuracy, debuging
-should be done with a trace.  The Emulator provides real-time manipulation of
+should be done with a trace.  The Simulator provides real-time manipulation of
 the data.  This allows the developer to create and change desired conditions in
 real time.
 
-The OpenXC Emulator creates vehicle data in the OpenXC format, emulating data
-that comes from the OpenXC Vehicle Interface.  It emulates all of the signals in
+The OpenXC Simulator creates vehicle data in the OpenXC format, simulating data
+that comes from the OpenXC Vehicle Interface.  It simulates all of the signals in
 the
 [official OpenXC signal list](http://openxcplatform.com/vehicle-interface/output-format.html),
-at the listed frequencies.  The emulator also takes user input for the vehicle
+at the listed frequencies.  The simulator also takes user input for the vehicle
 controls.  (Pedals, steering wheel, etc.)  The generated data is displayed for
 the user and sent to the Android host device via TCP connection.  The vehicle
 dynamics model is simple.  It is modular, allowing for different vehicles, but
@@ -33,13 +33,13 @@ at 100Hz to produce plausible data for things like the torque and engine speed.
 The world outside the car is currently assumed to be a flat, featureless sphere,
 solely for the purpose of generating GPS data.
 
-The core of the emulator is python running a local web server through
+The core of the simultaor is Python running a local web server through
 [Flask](http://flask.pocoo.org/docs/installation).  The user interface is
-accessed through a web browser pointed at localhost.  The Emulator also listens
+accessed through a web browser pointed at localhost.  The Simulator also listens
 for incoming network connections from the OpenXC Enabler, running on an Android
 device.
 
-## Installing the Emulator
+## Installing the Simulator
 Once you've cloned the repository, install the Python Flask dependencies with
 `pip`:
 
@@ -52,10 +52,10 @@ Another option is to run the install with sudo:
 
       $ sudo pip install -r pip-requirements.txt
 
-## Running the Emulator
+## Running the Simulator
 To run the app:
 
-      $ ./emulate.py
+      $ ./simulator.py
 
 To open the UI, open a browser and navigate to http://localhost:50000/
 
@@ -64,18 +64,17 @@ choose Data Sources, and enable "Use a network device".
 
 <img src="docs/Enabler_Screenshot.png" height="320px" width="192px" />
 
-Set the host address to the address of the machine running emulate.py, and set
-the port to 50001. You may need to disable and re-enable "Use a network device"
-after entering the correct information. The terminal running emulate.py should
-indicate that it received a new connection.
+Set the host address to the address of the machine running the simulator and set
+the port to 50001. The terminal running the simulator should indicate that it
+received a new connection.
 
 If the Enabler fails to connect, you may need to use a different IP address.
 The python address detection isn't perfect, and multiple IPs on a computer can
-confuse it.  When emulate.py is started, it displays a list of IPs on which it
+confuse it.  When the simulator is started, it displays a list of IPs on which it
 listens for connections from the OpenXC Enabler.
 
 ## Under the Hood
-The Emulator is comprised of three main components:  The State Manager, The User
+The Simulator is comprised of three main components:  The State Manager, The User
 Interface, and the Dynamics Model.  The Network Connection to the OpenXC Enabler
 makes use of the
 [OpenXC Web API](https://github.com/openxc/web-logging-example#api).
@@ -83,15 +82,15 @@ makes use of the
 ![Project Overview](docs/Overview.png)
 
 ### User Interface
-![Emulator screen shot](docs/emulator-screen-shot.png)
+![Simulator screen shot](docs/simulator-screenshot.png)
 The GUI allows real time user input.  (pedals, gear, steering wheel, etc.)  The
 GUI also displays the outgoing data to the user.  This is not intended to be any
 sort of video game, nor a simulation of the driving experience.  It is only
 intended to simulate the data that might be generated on the CAN bus.  The user
 interface uses [Flask](http://flask.pocoo.org/) and
-[jQuery](http://jqueryui.com/) to provide interaction with the Emulator.
+[jQuery](http://jqueryui.com/) to provide interaction with the Simulator.
 
-emulate.py
+simulator.py
 
 This is the Python script that sets everything in motion.  It starts the Flask
 server, creates the State Manager object, provides data to the UI, and handles
@@ -104,7 +103,7 @@ templates/vehicle_controls.html
 These provide the html code for the user interface.  They provide the framework
 in which the jQuery components work.
 
-static/emulator_scripts.js
+static/simulator_scripts.js
 
 This has all the JavaScript code for the UI.  The majority of this file is code
 handling the jQuery elemenents.  It also contains the loop that polls the
@@ -135,7 +134,7 @@ for moving data from the State Manager to the Enablers.
 The Dynamics Model iterates at 100Hz.  Data is kept in the Physics Model with a
 higher precision than is used in the CAN traffic.  (This will help reproduce
 conditions that have created failures in vehicles, but did not fail with the
-current emulator.)
+current simulator.)
 
 dynamics_model.py
 
