@@ -3,14 +3,14 @@ import dynamics_model
 import threading
 import time
 import datetime
-import math
+import json
 
 class StateManager(object):
     def __init__(self):
         self.stopped = False
         self.connection = enabler_connection.EnablerConnection()
         self.dynamics_model = dynamics_model.DynamicsModel()
-        
+
         self.headlamp = False
         self.highbeams = False
         self.wipers = False
@@ -267,10 +267,13 @@ class StateManager(object):
         for signal in self.data:
             if now > signal['deadline']:
                 self.update_signal(signal, snapshot)
-                signal['deadline'] = now + signal['period']                
+                signal['deadline'] = now + signal['period']
             elif signal['fast_update']:
                 if snapshot[signal['name']] != signal['last_value']:
                     self.update_signal(signal, snapshot)
+        import random
+        self.connection.send(json.dumps(dict(bus=1, id=random.randint(1, 24),
+            data="0x0%d02030405060708" % random.randint(1, 9))) + '\x00')
         time.sleep(0.01)
 
     def send_local_loop(self):
