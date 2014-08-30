@@ -45,7 +45,10 @@ class EnablerConnection():
         data = {'name':name,'value':value}
         if event is not None and event != '':
             data['event'] = event
-        self.send(json.dumps(data) + '\x00')
+        self.send_json(json.dumps(data))
+
+    def send_json(self, json_payload):
+        self.send(json_payload + '\x00')
 
     def received_messages(self):
         all_received_data = ''.join(handler.received_command_data for handler in

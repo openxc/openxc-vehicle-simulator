@@ -10,7 +10,7 @@ class StateManager(object):
         self.stopped = False
         self.connection = enabler_connection.EnablerConnection()
         self.dynamics_model = dynamics_model.DynamicsModel()
-        
+
         self.headlamp = False
         self.highbeams = False
         self.wipers = False
@@ -267,7 +267,7 @@ class StateManager(object):
         for signal in self.data:
             if now > signal['deadline']:
                 self.update_signal(signal, snapshot)
-                signal['deadline'] = now + signal['period']                
+                signal['deadline'] = now + signal['period']
             elif signal['fast_update']:
                 if snapshot[signal['name']] != signal['last_value']:
                     self.update_signal(signal, snapshot)
@@ -298,6 +298,9 @@ class StateManager(object):
 
     def send_callback(self, data_name, value, event=None):
         self.connection.send_measurement(data_name, value, event)
+
+    def send_json(self, payload):
+        self.connection.send_json(payload)
 
     def update_door(self, door, value):
         self.door_status[door] = value

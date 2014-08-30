@@ -84,9 +84,9 @@ Vehicle Controls:
 <br><label for="new_lon">Longitude</label>
     <input type="text" name="new_lon" id="new_lon"
                 value="{{ session['new_lon'] }}"/>
- <br><button type="button" id="new_lat_lon" name="new_lat_lon">Update Lat/Lon</button>   
+ <br><button type="button" id="new_lat_lon" name="new_lat_lon">Update Lat/Lon</button>
 <br><br>
-    
+
     <table>Vehicle Dynamics Data:
         <tr><td>Torque at Transmission: </td><td id="torque"></td><td>Nm</td></tr>
         <tr><td>Engine Speed: </td><td id="engine_speed"></td><td>RPM</td></tr>
@@ -99,7 +99,7 @@ Vehicle Controls:
         <tr><td>Longitude: </td><td id="longitude"></td><td></td></tr>
     </table>
 
-<h3>Custom Message</h3>
+<h3>Custom Simple Message</h3>
 <br><form id="custom_message_form" method="POST" action="{{
         url_for('send_custom_message') }}">
     <p>
@@ -116,6 +116,16 @@ Vehicle Controls:
     <label for="custom_message_event">Event</label>
     <input type="text" name="custom_message_event" id="custom_message_event"
                 value="{{ session['custom_message_event'] }}"/>
+    </p>
+    <button type="submit">Send</button>
+</form>
+
+<h3>Custom Arbitrary Message</h3>
+<br><form id="custom_arbitrary_message_form" method="POST" action="{{
+        url_for('send_custom_json') }}">
+    <p>
+        <textarea rows=10 cols=60 name="custom_message_payload"
+                id="custom_message_payload">{{ session['custom_message_payload'] }}</textarea>
     </p>
     <button type="submit">Send</button>
 </form>
