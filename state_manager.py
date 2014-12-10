@@ -157,6 +157,14 @@ class StateManager(object):
         self.dynamics_model.parking_brake_status = value
 
     @property
+    def manual_trans_status(self):
+        return self.dynamics_model.manual_trans_status
+
+    @manual_trans_status.setter
+    def manual_trans_status(self, value):
+        self.dynamics_model.manual_trans_status = value
+
+    @property
     def brake_pedal_position(self):
         return self.dynamics_model.brake
 
@@ -305,3 +313,9 @@ class StateManager(object):
 
     def received_messages(self):
         return self.connection.received_messages()
+
+    def upshift(self):
+        self.dynamics_model.upshift();
+
+    def downshift(self):
+        self.dynamics_model.downshift();

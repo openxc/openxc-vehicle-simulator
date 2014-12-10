@@ -82,6 +82,8 @@ def set_data():
           gState.parking_brake_status = python_bool(request.form['value'])
      elif name == "ignition_status":
           gState.ignition_status = request.form['value']
+     elif name == "manual_trans_status":
+          gState.manual_trans_status = python_bool(request.form['value'])
      elif name == "headlamp_status":
           gState.headlamp_status = python_bool(request.form['value'])
      elif name == "high_beam_status":
@@ -97,6 +99,10 @@ def set_data():
           gState.latitude = float(request.form['value'])
      elif name == "longitude":
           gState.longitude = float(request.form['value'])
+     elif name == "upshift":
+          gState.upshift()
+     elif name == "downshift":
+          gState.downshift()
      else:
           print("Unsupported data received from UI: " + str(request.form))
 

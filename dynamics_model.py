@@ -7,6 +7,7 @@ import json
 
 from data import speed_calc
 from data import gear_calc
+from data import gear_int_calc
 from data import torque_calc
 from data import engine_speed_calc
 from data import fuel_consumed_calc
@@ -30,6 +31,7 @@ class DynamicsModel(object):
         self.calculations = []
         self.calculations.append(speed_calc.SpeedCalc())
         self.calculations.append(gear_calc.GearCalc())
+        self.calculations.append(gear_int_calc.GearIntCalc())
         self.calculations.append(torque_calc.TorqueCalc())
         self.calculations.append(engine_speed_calc.EngineSpeedCalc())
         self.calculations.append(fuel_consumed_calc.FuelConsumedCalc())
@@ -54,6 +56,7 @@ class DynamicsModel(object):
         self.engine_running = True
         self.ignition_data = 'run'
         self.gear_lever = 'drive'
+        self.manual_trans_status = False
 
         self.snapshot['accelerator_pedal_position'] = self.accelerator
         self.snapshot['brake'] = self.brake
@@ -63,6 +66,7 @@ class DynamicsModel(object):
         self.snapshot['ignition_status'] = self.ignition_data
         self.snapshot['brake_pedal_status'] = self.brake_pedal_status
         self.snapshot['gear_lever_position'] = self.gear_lever
+        self.snapshot['manual_trans'] = self.manual_trans_status
 
         self.stopped = False
 
@@ -89,6 +93,7 @@ class DynamicsModel(object):
                 new_snapshot['ignition_status'] = self.ignition_data
                 new_snapshot['brake_pedal_status'] = self.brake_pedal_status
                 new_snapshot['gear_lever_position'] = self.gear_lever
+                new_snapshot['manual_trans'] = self.manual_trans_status
 
                 self.snapshot = new_snapshot
 # Properties  ---------------------
@@ -178,3 +183,15 @@ class DynamicsModel(object):
         for data in self.calculations:
             if data.name == 'longitude':
                 data.data = value
+
+    def upshift(self):
+        if self.manual_trans_status:
+            for data in self.calculations:
+                if data.name == "transmission_gear_int":
+                    data.shift_up()
+
+    def downshift(self):
+        if self.manual_trans_status:
+            for data in self.calculations:
+                if data.name == "transmission_gear_int":
+                    data.shift_down()
