@@ -17,8 +17,8 @@ class GearIntCalc(DataCalc):
 
     def shift_down(self):
         self.data = self.data - 1
-        if self.data < 0:
-            self.data = 0
+        if self.data < 1:
+            self.data = 1
 
     # Any necessary data should be passed in
     def iterate(self, snapshot):
