@@ -33,9 +33,9 @@ class LonCalc(DataCalc):
         km_per_deg = math.fabs(self.km_per_deg_equator * math.sin(lat_rad))
 
         if lat != 0:
-		delta_lon = E_W_dist / km_per_deg
-	else:
-		delta_lon = E_W_dist
+                delta_lon = E_W_dist / km_per_deg
+        else:
+                delta_lon = E_W_dist
         new_lon = self.data + delta_lon
         while new_lon >= 180.0:
             new_lon = new_lon - 360
