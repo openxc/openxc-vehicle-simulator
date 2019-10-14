@@ -45,7 +45,7 @@ class EnablerConnection():
         data = {'name':name,'value':value}
         if event is not None and event != '':
             data['event'] = event
-        self.send(json.dumps(data) + '\x00')
+        self.send(str.encode(json.dumps(data) + '\x00'))
 
     def received_messages(self):
         all_received_data = ''.join(handler.received_command_data for handler in
@@ -69,4 +69,4 @@ class SocketHandler(threading.Thread):
             if not data:
                 break
             else:
-                self.received_command_data += data
+                self.received_command_data += data.decode()
