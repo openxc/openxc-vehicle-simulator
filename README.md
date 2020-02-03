@@ -54,11 +54,11 @@ Next, install Python and `pip`:
 
 Mac OS X and most Linux distributions already have a compatible Python
 installed. Run `python --version` from a terminal to check - you need a
-2.7.x version or greater, such as 2.7.8 or 3.6.0.
+3.6.x version or greater, such as 3.6.7.
 
 #### Windows
 
-1. Download and run the [Python 2.6.x MSI
+1. Download and run the [Python 3.6.x MSI
    installer](https://www.python.org/downloads/release/python-367/). Make sure to
    select to option to `Add python.exe to Path`.
 1. Add the Python Scripts directory your PATH. If you aren't sure how to edit your
