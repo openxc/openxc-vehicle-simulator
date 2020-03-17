@@ -16,10 +16,12 @@ class SpeedCalc(DataCalc):
         brake = snapshot['brake']
         parking_brake_status = snapshot['parking_brake_status']
         ignition_status = snapshot['engine_running']
+        engine_speed = snapshot['engine_speed']
+        gear = snapshot['transmission_gear_int']
 
         # Any necessary data should be passed in
         AIR_DRAG_COEFFICIENT = .000008
-        ENGINE_DRAG_COEFFICIENT = 0.02
+        ENGINE_DRAG_COEFFICIENT = 0.0004
         BRAKE_CONSTANT = 0.1
         ENGINE_V0_FORCE = 20 #units are cars*km/h/s
         CAR_MASS = 1  # Specifically, one car.
@@ -27,11 +29,11 @@ class SpeedCalc(DataCalc):
 
         air_drag = speed * speed * speed * AIR_DRAG_COEFFICIENT
 
-        engine_drag = speed * ENGINE_DRAG_COEFFICIENT
+        engine_drag = engine_speed * ENGINE_DRAG_COEFFICIENT
 
         if ignition_status:
             # accelerator_percent is 0.0 to 100.0, not 0
-            engine_force = (ENGINE_V0_FORCE * accelerator_percent / 100)
+            engine_force = (ENGINE_V0_FORCE * accelerator_percent / (50 * gear))
         else:
             engine_force = 0.0
 

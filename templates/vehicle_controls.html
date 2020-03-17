@@ -47,6 +47,16 @@ Vehicle Controls:
     </div>
 </form>
 
+<br><form id="manual_form">
+    <label for="manual_check">Select Shift Transmission:</label>
+    <input type="checkbox" name="manual_check"
+        id="manual_check" />
+    <input type="button" name="upshift_button"
+        id="upshift_button" value="Shift Up" />
+    <input type="button" name="downshift_button"
+        id="downshift_button" value="Shift Down" />
+</form>
+
 <br><form id="headlamp_form">
     <label for="headlamp_check">Headlamp Status:</label>
     <input type="checkbox" name="headlamp_check"
@@ -89,6 +99,7 @@ Vehicle Controls:
 
     <table>Vehicle Dynamics Data:
         <tr><td>Torque at Transmission: </td><td id="torque"></td><td>Nm</td></tr>
+        <tr><td>Transmission Gear: </td><td id="gear"></td><td>Nm</td></tr>
         <tr><td>Engine Speed: </td><td id="engine_speed"></td><td>RPM</td></tr>
         <tr><td>Vehicle Speed: </td><td id="vehicle_speed"></td><td>km/hr</td></tr>
         <tr><td>Fuel Consumed Since Restart: </td><td id="fuel_consumed"></td><td>L</td></tr>

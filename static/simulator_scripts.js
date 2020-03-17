@@ -118,8 +118,33 @@ $(function() {
 });
 
 $(function() {
+    $('#manual_check').change(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "manual_trans_status", value: this.checked});
+        if(this.checked) {
+            document.getElementById("downshift_button").disabled='';
+            document.getElementById("upshift_button").disabled='';
+        } else {
+            document.getElementById("downshift_button").disabled='disabled';
+            document.getElementById("upshift_button").disabled='disabled';
+        }
+    });
+});
+
+$(function() {
     $('#headlamp_check').change(function(){
         jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "headlamp_status", value: this.checked});
+    });
+});
+
+$(function() {
+    $('#upshift_button').click(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "upshift" });
+    });
+});
+
+$(function() {
+    $('#downshift_button').click(function(){
+        jQuery.post($SCRIPT_ROOT + '/_set_data', { name: "downshift" });
     });
 });
 
@@ -192,6 +217,7 @@ $(function() {
 
     function ParseData(dataJSON) {
         document.getElementById("torque").innerHTML = (dataJSON.torque_at_transmission).toFixed(0);
+        document.getElementById("gear").innerHTML = dataJSON.transmission_gear_position;
         document.getElementById("engine_speed").innerHTML = (dataJSON.engine_speed).toFixed(0);
         document.getElementById("vehicle_speed").innerHTML = (dataJSON.vehicle_speed).toFixed(2);
         document.getElementById("fuel_consumed").innerHTML = (dataJSON.fuel_consumed_since_restart).toFixed(3);

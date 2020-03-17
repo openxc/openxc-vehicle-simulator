@@ -10,5 +10,6 @@ class EngineSpeedCalc(DataCalc):
 
     def iterate(self, snapshot):
         vehicle_speed = snapshot['vehicle_speed']
+        gear = snapshot['transmission_gear_int']
         
-        self.data = 16382 * vehicle_speed / 200.0
+        self.data = 16382 * vehicle_speed / (100.0 * gear)

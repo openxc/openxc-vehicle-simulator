@@ -72,4 +72,4 @@ class SocketHandler(threading.Thread):
             if not data:
                 break
             else:
-                self.received_command_data += data
+                self.received_command_data += data.decode()
