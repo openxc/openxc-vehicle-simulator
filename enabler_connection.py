@@ -18,7 +18,7 @@ class EnablerConnection():
     def send(self, outString):
         for socket_handler in self.connections:
             try:
-                socket_handler.send(outString)
+                socket_handler.send(outString.encode())
             except Exception as e:
                 # TODO:  Isolate dropped connection, recover from other things.
                 # For now, no recovery.  If ANYTHING goes wrong, drop the
