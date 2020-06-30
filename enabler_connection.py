@@ -18,7 +18,7 @@ class EnablerConnection():
     def send(self, outString):
         for socket_handler in self.connections:
             try:
-                socket_handler.send(outString)
+                socket_handler.send(outString.encode())
             except Exception as e:
                 # TODO:  Isolate dropped connection, recover from other things.
                 # For now, no recovery.  If ANYTHING goes wrong, drop the
@@ -45,7 +45,10 @@ class EnablerConnection():
         data = {'name':name,'value':value}
         if event is not None and event != '':
             data['event'] = event
-        self.send(str.encode(json.dumps(data) + '\x00'))
+        self.send_json(json.dumps(data))
+
+    def send_json(self, json_payload):
+        self.send(json_payload + '\x00')
 
     def received_messages(self):
         all_received_data = ''.join(handler.received_command_data for handler in

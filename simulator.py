@@ -54,17 +54,28 @@ def start():
      gState.resume()
      return redirect(url_for('vehicle_data'))
 
+@app.route('/custom-json', methods=['POST'])
+def send_custom_json():
+
+    custom_json_payload = request.form['custom_message_payload']
+    session['custom_message_payload'] = custom_json_payload
+    gState.send_json(custom_json_payload)
+
+    return redirect(url_for('vehicle_data'))
+
 @app.route('/custom-message', methods=['POST'])
 def send_custom_message():
-     name = request.form['custom_message_name']
-     value = request.form['custom_message_value']
-     event = request.form['custom_message_event']
 
-     session['custom_message_name'] = name
-     session['custom_message_value'] = value
-     session['custom_message_event'] = event
-     gState.send_callback(name, value, event)
-     return redirect(url_for('vehicle_data'))
+    name = request.form['custom_message_name']
+    value = request.form['custom_message_value']
+    event = request.form['custom_message_event']
+
+    session['custom_message_name'] = name
+    session['custom_message_value'] = value
+    session['custom_message_event'] = event
+
+    gState.send_callback(name, value, event)
+    return redirect(url_for('vehicle_data'))
 
 @app.route('/_set_data', methods=['POST'])
 def set_data():
